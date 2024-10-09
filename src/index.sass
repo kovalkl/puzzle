@@ -1,5 +1,6 @@
 @import '@/styles/reset.sass'
 @import '@/styles/variables.sass'
+@import '@/styles/mixins.sass'
 
 #root
   font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif
@@ -11,6 +12,10 @@
   -moz-osx-font-smoothing: grayscale
   min-width: 100vw
   min-height: 100vh
+
+root
+  @include breakpoint(mobile)
+    font-size: 14px
 
 body
   margin: 0
@@ -38,9 +43,12 @@ body
   flex-direction: column
   width: 100%
   max-width: 1320px
-  padding: 0 15px
+  padding: 0 16px
   margin: 0 auto
   flex: 1
+
+  @include breakpoint(mobile)
+    padding: 0 8px
 
 h1
   font-size: 1.5rem
