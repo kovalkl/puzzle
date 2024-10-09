@@ -1,0 +1,32 @@
+@import '@/styles/variables.sass'
+
+.login
+  display: flex
+  flex-direction: column
+  justify-content: center
+  max-width: 450px
+  width: 100%
+  padding: 35px 35px 45px
+  background-color: $white-color
+  border-radius: 5px
+  box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25)
+  z-index: 20
+
+  &__title
+    margin-bottom: 40px
+    color: $accent-color
+    text-align: center
+    text-transform: uppercase
+    font-weight: normal
+
+  &__form
+    display: flex
+    flex-direction: column
+    gap: 5px
+
+    & > button
+      margin-top: 10px
+
+.container
+  align-items: center
+  justify-content: center

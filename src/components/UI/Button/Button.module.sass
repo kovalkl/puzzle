@@ -1,0 +1,20 @@
+@import '@/styles/variables.sass'
+
+.button
+  padding: 13px 25px
+  width: 100%
+  background-color: $accent-color
+  color: $white-color
+  border: none
+  cursor: pointer
+  transition: opacity 0.3s, background-color 0.3s
+  text-transform: uppercase
+  font-weight: 600
+
+  @media(any-hover: hover)
+    &:hover
+      opacity: 0.9
+
+  &:disabled
+    background-color: $light-gray-color
+    pointer-events: none

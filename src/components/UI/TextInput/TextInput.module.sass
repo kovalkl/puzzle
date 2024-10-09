@@ -1,0 +1,28 @@
+@import '@/styles/variables.sass'
+
+.textInput
+  display: flex
+  flex-direction: column
+
+  &__input
+    height: 48px
+    width: 100%
+    padding: 0 10px
+    transition: border 0.3s
+    border: 1px solid $light-gray-color
+
+    &:focus-visible
+      border: 1px solid $accent-color
+
+    &.error
+      border: 1px solid $error-color
+
+    &.success
+      border: 1px solid $success-color
+
+  &__error
+    min-height: 20px
+    width: 100%
+    font-size: 0.80rem
+    color: $info-color
+    letter-spacing: 0.5px
