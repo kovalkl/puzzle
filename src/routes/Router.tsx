@@ -1,18 +1,24 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
-import Root from '@/routes/Root';
-import LoginPage from '@/views/LoginPage/LoginPage';
-
-const isAuth = false;
+import { Greeting } from '@/components/Greeting/Greeting';
+import { paths } from '@/constants/paths';
+import { Root } from '@/routes/Root';
+import { LoginPage } from '@/views/LoginPage/LoginPage';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: isAuth ? <Root /> : <Navigate to='/login' />,
+    path: paths.ROOT,
+    element: <Root />,
+    children: [
+      {
+        path: paths.GREETING,
+        element: <Greeting />,
+      },
+    ],
   },
   {
-    path: '/login',
-    element: !isAuth ? <LoginPage /> : <Navigate to='/' />,
+    path: `/${paths.LOGIN}`,
+    element: <LoginPage />,
   },
 ]);
 

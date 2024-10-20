@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-const Root = () => {
+import { Header } from '@/components/Header/Header';
+
+export const Root = () => {
   return (
     <div>
-      m
+      <Header />
       <Outlet />
     </div>
   );
 };
-
-export default Root;
