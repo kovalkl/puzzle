@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux';
-
 import { Logout } from '@/components/UI/Icons/Logout';
+import { useAppSelector } from '@/store/hooks';
 
 import styles from '@/components/Header/Header.module.sass';
 
-export const Header = () => {
-  const { userName } = useSelector((state) => state.userProgress.userName);
+export const Header = ({ isGreetingPage }: { isGreetingPage?: boolean }) => {
+  const { userName } = useAppSelector((state) => state.userProgress);
 
   return (
     <header className={styles.header}>

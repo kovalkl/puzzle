@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type UserProgressType = {
   userName: string;
@@ -16,11 +16,14 @@ const userProgress = createSlice({
   name: 'userProgress',
   initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.userName = action.payload.userName;
+    addUser: (state, action: PayloadAction<string>) => {
+      state.userName = action.payload;
     },
 
-    addLevel: (state, action) => {
+    addLevel: (
+      state,
+      action: PayloadAction<{ round: number; level: number }>,
+    ) => {
       state.userProgress[action.payload.round].push(action.payload.level);
     },
   },

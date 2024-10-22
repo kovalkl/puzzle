@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { loginSchema } from '@/components/Login/loginSchema';
 import Button from '@/components/UI/Button/Button';
 import TextInput from '@/components/UI/TextInput/TextInput';
 import { paths } from '@/constants/paths';
+import { useAppDispatch } from '@/store/hooks';
 import { addUser } from '@/store/userProgressSlice';
 import { UserType } from '@/types/types';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from '@/components/Login/Login.module.sass';
 
 export const Login = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const {
@@ -24,7 +24,7 @@ export const Login = () => {
 
   const onSubmit = (data: UserType) => {
     dispatch(addUser(`${data.firstName} ${data.surname}`));
-    navigate(paths.ROOT);
+    navigate(`/${paths.GREETING}`);
   };
 
   return (
