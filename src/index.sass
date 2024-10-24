@@ -26,17 +26,7 @@ body
   min-height: 100vh
   background-color: $light-color
 
-  &::-webkit-scrollbar
-    width: 6px
-    background-color: $light-color
-
-  &::-webkit-scrollbar-thumb
-    border-radius: 10px
-    background-color: $light-gray-color
-
-  &::-webkit-scrollbar-track
-    border-radius: 10px
-    background-color: $light-color
+  @include scrollbar
 
 .container
   display: flex

@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 type UserProgressType = {
   userName: string;
   userProgress: {
-    [key: number]: number[];
+    [key: number]: string[];
   };
 };
 
@@ -22,9 +22,9 @@ const userProgress = createSlice({
 
     addLevel: (
       state,
-      action: PayloadAction<{ round: number; level: number }>,
+      action: PayloadAction<{ round: number; levelId: string }>,
     ) => {
-      state.userProgress[action.payload.round].push(action.payload.level);
+      state.userProgress[action.payload.round].push(action.payload.levelId);
     },
   },
 });

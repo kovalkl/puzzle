@@ -8,3 +8,16 @@
   @else if $size == desktop
     @media (max-width: 1320px)
       @content
+
+@mixin scrollbar()
+  &::-webkit-scrollbar
+    width: 6px
+    background-color: $light-color
+
+  &::-webkit-scrollbar-thumb
+    border-radius: 10px
+    background-color: $light-gray-color
+
+  &::-webkit-scrollbar-track
+    border-radius: 10px
+    background-color: $light-color
