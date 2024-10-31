@@ -1,15 +1,11 @@
-type WordWithWidth = {
-  word: string;
-  width: number;
-  index: number;
-};
+import { PuzzleType } from '@/store/types';
 
-export const splitShuffleWithWidth = (sentence: string): WordWithWidth[] => {
+export const splitShuffleWithWidth = (sentence: string): PuzzleType[] => {
   const sentenceLength = sentence.replace(/\s/g, '').length;
 
-  const shuffledArray = sentence.split(' ').map((word, index) => ({
-    word,
-    index,
+  const shuffledArray = sentence.split(' ').map((text, index) => ({
+    text,
+    id: index + 1,
   }));
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -18,7 +14,7 @@ export const splitShuffleWithWidth = (sentence: string): WordWithWidth[] => {
 
   const wordsWithWidths = shuffledArray.map((word) => ({
     ...word,
-    width: Math.max(Math.floor((word.word.length / sentenceLength) * 100), 5),
+    width: Math.max(Math.floor((word.text.length / sentenceLength) * 100), 5),
   }));
 
   const totalWidth = wordsWithWidths.reduce((sum, item) => sum + item.width, 0);

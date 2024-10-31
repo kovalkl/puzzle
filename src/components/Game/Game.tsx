@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 
+import { ActionButtons } from '@/components/Game/components/ActionButtons/ActionButtons';
 import { GameField } from '@/components/Game/components/GameField/GameField';
 import { WordBank } from '@/components/Game/components/WordBank/WordBank';
+import { fetchImage } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchImage, getLevelData } from '@/store/roundSlice';
+import { getLevelData } from '@/store/selectors';
 
 import styles from '@/components/Game/Game.module.sass';
 
@@ -17,13 +19,14 @@ export const Game = () => {
     }
   }, [dispatch, imageSrc]);
 
-  const fetchedImage = useAppSelector((state) => state.round.imageUrl);
+  const fetchedImage = useAppSelector((state) => state.gameImage.imageUrl);
 
   return (
     <div className='container'>
       <div className={styles.game__wrapper}>
         <GameField imageSrc={fetchedImage || ''} />
         <WordBank imageSrc={fetchedImage || ''} />
+        <ActionButtons />
       </div>
     </div>
   );

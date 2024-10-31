@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 
 import { Select } from '@/components/Header/components/Select/Select';
+import { fetchRounds } from '@/store/gameDataSlice';
+import { setCurrentLevel, setCurrentRound } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {
-  fetchRounds,
-  setCurrentLevel,
-  setCurrentRound,
-} from '@/store/roundSlice';
 
 export const StageSelector = () => {
-  const { countRounds, currentRound, currentLevel, rounds } = useAppSelector(
-    (state) => state.round,
+  const { countRounds, currentRound, currentLevel } = useAppSelector(
+    (state) => state.gameStatus,
   );
+  const { rounds } = useAppSelector((state) => state.gameData);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,14 +20,14 @@ export const StageSelector = () => {
   return (
     <>
       <Select
-        value={currentRound}
-        setValue={(round: string) => dispatch(setCurrentRound(round))}
+        value={currentRound.toString()}
+        setValue={(round: string) => dispatch(setCurrentRound(parseInt(round)))}
         length={countRounds}
         text='Round'
       />
       <Select
-        value={currentLevel}
-        setValue={(level: string) => dispatch(setCurrentLevel(level))}
+        value={currentLevel.toString()}
+        setValue={(level: string) => dispatch(setCurrentLevel(parseInt(level)))}
         length={rounds[currentRound]?.roundsCount}
         text='Level'
       />
