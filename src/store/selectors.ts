@@ -9,7 +9,7 @@ const getCurrentLevelData = (state: RootState) => {
 
   const currentRoundData = rounds[currentRound];
 
-  return currentRoundData?.rounds[currentLevel];
+  return currentRoundData?.rounds[currentLevel - 1];
 };
 
 export const getSentenceData = (state: RootState): WordsType | null => {
