@@ -28,4 +28,5 @@ export type PuzzleType = {
   id: number;
   text: string;
   width: number;
+  isCorrect?: boolean;
 };

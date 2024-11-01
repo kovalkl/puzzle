@@ -6,8 +6,9 @@ import { setCurrentLevel, setCurrentRound } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const StageSelector = () => {
-  const { countRounds, currentRound, currentLevel } = useAppSelector(
-    (state) => state.gameStatus,
+  const { countRounds } = useAppSelector((state) => state.gameStatus);
+  const { currentRound, currentLevel } = useAppSelector(
+    (state) => state.gameStatus.progress,
   );
   const { rounds } = useAppSelector((state) => state.gameData);
 

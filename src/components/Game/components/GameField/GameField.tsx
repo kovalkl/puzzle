@@ -13,9 +13,10 @@ type GameFieldProps = {
 };
 
 export const GameField = ({ imageSrc }: GameFieldProps) => {
-  const { currentSentenceCount, gameField } = useAppSelector(
-    (state) => state.gameStatus,
+  const { currentSentenceCount } = useAppSelector(
+    (state) => state.gameStatus.progress,
   );
+  const { gameField } = useAppSelector((state) => state.gameStatus.gameData);
   const dispatch = useAppDispatch();
 
   const onMovePuzzleToWordBank = (puzzle: PuzzleType) => {

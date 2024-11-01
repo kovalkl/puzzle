@@ -14,12 +14,12 @@ type WordBankProps = {
 
 export const WordBank = ({ imageSrc }: WordBankProps) => {
   const dispatch = useAppDispatch();
-  const sentenceArray = useAppSelector(getSentence);
-  const puzzles = useAppSelector((state) => state.gameStatus.puzzles);
+  const sentenceText = useAppSelector(getSentence);
+  const puzzles = useAppSelector((state) => state.gameStatus.gameData.wordBank);
 
   useEffect(() => {
-    dispatch(setPuzzles(sentenceArray));
-  }, [dispatch, sentenceArray]);
+    dispatch(setPuzzles(sentenceText));
+  }, [dispatch, sentenceText]);
 
   const onMovePuzzleToGameField = (puzzle: PuzzleType) => {
     dispatch(movePuzzleToGameField(puzzle));
