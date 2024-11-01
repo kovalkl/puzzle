@@ -16,7 +16,6 @@ export const WordBank = ({ imageSrc }: WordBankProps) => {
   const dispatch = useAppDispatch();
   const sentenceText = useAppSelector(getSentence);
   const puzzles = useAppSelector((state) => state.gameStatus.gameData.wordBank);
-
   useEffect(() => {
     dispatch(setPuzzles(sentenceText));
   }, [dispatch, sentenceText]);

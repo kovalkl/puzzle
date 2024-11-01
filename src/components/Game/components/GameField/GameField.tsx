@@ -4,7 +4,7 @@ import { movePuzzleToWordBank } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { PuzzleType } from '@/store/types';
 
-import styled from '@/components/Game/components/GameField/GameField.module.sass';
+import styles from '@/components/Game/components/GameField/GameField.module.sass';
 
 const COUNT_SENTENCES = 10;
 
@@ -13,10 +13,11 @@ type GameFieldProps = {
 };
 
 export const GameField = ({ imageSrc }: GameFieldProps) => {
-  const { currentSentenceCount } = useAppSelector(
-    (state) => state.gameStatus.progress,
-  );
-  const { gameField } = useAppSelector((state) => state.gameStatus.gameData);
+  const {
+    progress: { currentSentenceCount },
+    gameData: { gameField },
+    isShowCorrectness,
+  } = useAppSelector((state) => state.gameStatus);
   const dispatch = useAppDispatch();
 
   const onMovePuzzleToWordBank = (puzzle: PuzzleType) => {
@@ -25,23 +26,24 @@ export const GameField = ({ imageSrc }: GameFieldProps) => {
 
   return (
     <div
-      className={styled.gameField}
+      className={styles.gameField}
       style={{ backgroundImage: `url(${imageSrc})` }}
     >
       <div
-        className={styled.gameField__overlay}
+        className={styles.gameField__overlay}
         style={{ height: getHeightOverlay(currentSentenceCount) }}
       ></div>
       {[...Array(COUNT_SENTENCES)].map((_, index) => (
         <div
           key={index}
-          className={styled.gameField__row}
+          className={styles.gameField__row}
           id={`row_${index + 1}`}
         >
           {currentSentenceCount === index + 1 &&
             Boolean(gameField.length) &&
             gameField.map((puzzle) => (
               <WordItem
+                isCorrect={isShowCorrectness ? puzzle.isCorrect : null}
                 key={puzzle.id}
                 wordData={puzzle}
                 imageSrc={imageSrc}
