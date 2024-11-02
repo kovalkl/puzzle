@@ -2,14 +2,18 @@ import { useEffect } from 'react';
 
 import { Select } from '@/components/Header/components/Select/Select';
 import { fetchRounds } from '@/store/gameDataSlice';
-import { setCurrentLevel, setCurrentRound } from '@/store/gameStatusSlice';
+import {
+  setCountLevels,
+  setCurrentLevel,
+  setCurrentRound,
+} from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const StageSelector = () => {
-  const { countRounds } = useAppSelector((state) => state.gameStatus);
-  const { currentRound, currentLevel } = useAppSelector(
-    (state) => state.gameStatus.progress,
-  );
+  const {
+    countRounds,
+    progress: { currentRound, currentLevel },
+  } = useAppSelector((state) => state.gameStatus);
   const { rounds } = useAppSelector((state) => state.gameData);
 
   const dispatch = useAppDispatch();
@@ -17,6 +21,12 @@ export const StageSelector = () => {
   useEffect(() => {
     dispatch(fetchRounds({ round: currentRound }));
   }, [dispatch, currentRound]);
+
+  useEffect(() => {
+    if (rounds[currentRound]) {
+      dispatch(setCountLevels(rounds[currentRound].roundsCount));
+    }
+  }, [currentRound, dispatch, rounds]);
 
   return (
     <>

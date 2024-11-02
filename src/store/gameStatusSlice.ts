@@ -1,4 +1,4 @@
-import { splitShuffleWithWidth } from '@/store/splitShuffleWithWidth';
+import { getPuzzleArray, getShuffledPuzzleArray } from '@/store/getPuzzleArray';
 import { PuzzleType } from '@/store/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
@@ -18,6 +18,7 @@ type ProgressType = {
 
 type GameStatusSliceType = {
   countRounds: number;
+  countLevels: number;
   progress: ProgressType;
   currentSentenceText: string[];
   gameData: {
@@ -31,6 +32,7 @@ type GameStatusSliceType = {
 
 const initialState: GameStatusSliceType = {
   countRounds: COUNT_ROUNDS,
+  countLevels: 0,
   progress: {
     currentRound: 1,
     currentLevel: 1,
@@ -55,23 +57,20 @@ const gameStatusSlice = createSlice({
   initialState,
   reducers: {
     setCurrentRound: (state, action: PayloadAction<number>) => {
-      state.progress.currentRound = action.payload;
-
       state.progress.currentLevel = 1;
+      state.progress.currentSentenceCount = 1;
+      state.progress.currentRound = action.payload;
     },
     setCurrentLevel: (state, action: PayloadAction<number>) => {
+      state.progress.currentSentenceCount = 1;
       state.progress.currentLevel = action.payload;
-    },
-
-    setNextSentence: (stage) => {
-      stage.progress.currentSentenceCount += 1;
     },
 
     setPuzzles: (state, action: PayloadAction<string>) => {
       state.gameData.gameField = [];
       state.currentSentenceText = action.payload.split(' ');
 
-      state.gameData.wordBank = splitShuffleWithWidth(action.payload);
+      state.gameData.wordBank = getShuffledPuzzleArray(action.payload);
     },
 
     movePuzzleToGameField: (state, action: PayloadAction<PuzzleType>) => {
@@ -118,6 +117,49 @@ const gameStatusSlice = createSlice({
           },
         );
       }
+
+      state.isSentenceCorrect = state.gameData.gameField.every((puzzle) => {
+        return puzzle.isCorrect;
+      });
+    },
+
+    setNextSentence: (state) => {
+      state.isSentenceCorrect = false;
+
+      if (state.progress.currentSentenceCount < 10) {
+        state.progress.currentSentenceCount += 1;
+        return;
+      }
+
+      state.progress.currentSentenceCount = 1;
+
+      if (state.progress.currentLevel < state.countLevels) {
+        state.progress.currentLevel += 1;
+        return;
+      }
+
+      state.progress.currentLevel = 1;
+
+      if (state.progress.currentRound < state.countRounds) {
+        state.progress.currentRound += 1;
+        return;
+      }
+
+      state.progress.currentRound = 1;
+    },
+
+    getCorrectPuzzles: (state) => {
+      state.gameData.gameField = getPuzzleArray(
+        state.currentSentenceText.join(' '),
+      );
+
+      state.gameData.wordBank = [];
+
+      state.isSentenceCorrect = true;
+    },
+
+    setCountLevels: (state, action: PayloadAction<number>) => {
+      state.countLevels = action.payload;
     },
   },
 });
@@ -130,6 +172,8 @@ export const {
   movePuzzleToGameField,
   movePuzzleToWordBank,
   checkCorrectness,
+  setCountLevels,
+  getCorrectPuzzles,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;
