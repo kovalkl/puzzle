@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { ActionButtons } from '@/components/Game/components/ActionButtons/ActionButtons';
 import { GameField } from '@/components/Game/components/GameField/GameField';
+import { HintsBlock } from '@/components/Game/components/HintsBlock/HintsBlock';
 import { WordBank } from '@/components/Game/components/WordBank/WordBank';
 import { fetchImage } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -22,8 +23,9 @@ export const Game = () => {
   const fetchedImage = useAppSelector((state) => state.gameImage.imageUrl);
 
   return (
-    <div className='container'>
+    <div className={`${styles.game} container`}>
       <div className={styles.game__wrapper}>
+        <HintsBlock />
         <GameField imageSrc={fetchedImage || ''} />
         <WordBank imageSrc={fetchedImage || ''} />
         <ActionButtons />

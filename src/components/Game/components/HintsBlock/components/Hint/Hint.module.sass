@@ -1,0 +1,28 @@
+@import '@/styles/variables.sass'
+
+.hint
+  border: 2px solid $info-color
+  cursor: pointer
+  height: 35px
+  width: 35px
+  display: flex
+  align-items: center
+  justify-content: center
+  transition: opacity 0.3s
+
+  & path
+    fill: $info-color
+    transition: opacity 0.3s
+
+  @media (any-hover: hover)
+    &:hover
+      opacity: 0.8
+
+      & path
+        opacity: 0.9
+
+  &.active
+    border-color: $accent-color
+
+    & path
+      fill: $accent-color

@@ -49,7 +49,7 @@ const initialState: GameStatusSliceType = {
   },
   hints: {
     isAudioEnabled: false,
-    isImageEnabled: false,
+    isImageEnabled: true,
     isTranslationEnabled: false,
   },
   isShowCorrectness: false,
@@ -165,6 +165,18 @@ const gameStatusSlice = createSlice({
     setCountLevels: (state, action: PayloadAction<number>) => {
       state.levelInfo.countLevels = action.payload;
     },
+
+    changeTranslationHint: (state) => {
+      state.hints.isTranslationEnabled = !state.hints.isTranslationEnabled;
+    },
+
+    changeImageHint: (state) => {
+      state.hints.isImageEnabled = !state.hints.isImageEnabled;
+    },
+
+    changeAudioHint: (state) => {
+      state.hints.isAudioEnabled = !state.hints.isAudioEnabled;
+    },
   },
 });
 
@@ -178,6 +190,9 @@ export const {
   checkCorrectness,
   setCountLevels,
   getCorrectPuzzles,
+  changeTranslationHint,
+  changeImageHint,
+  changeAudioHint,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;
