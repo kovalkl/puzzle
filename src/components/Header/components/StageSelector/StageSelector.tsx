@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const StageSelector = () => {
   const {
-    countRounds,
+    levelInfo: { countRounds },
     progress: { currentRound, currentLevel },
   } = useAppSelector((state) => state.gameStatus);
   const { rounds } = useAppSelector((state) => state.gameData);

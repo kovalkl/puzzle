@@ -17,8 +17,10 @@ type ProgressType = {
 };
 
 type GameStatusSliceType = {
-  countRounds: number;
-  countLevels: number;
+  levelInfo: {
+    countRounds: number;
+    countLevels: number;
+  };
   progress: ProgressType;
   currentSentenceText: string[];
   gameData: {
@@ -31,8 +33,10 @@ type GameStatusSliceType = {
 };
 
 const initialState: GameStatusSliceType = {
-  countRounds: COUNT_ROUNDS,
-  countLevels: 0,
+  levelInfo: {
+    countRounds: COUNT_ROUNDS,
+    countLevels: 0,
+  },
   progress: {
     currentRound: 1,
     currentLevel: 1,
@@ -133,14 +137,14 @@ const gameStatusSlice = createSlice({
 
       state.progress.currentSentenceCount = 1;
 
-      if (state.progress.currentLevel < state.countLevels) {
+      if (state.progress.currentLevel < state.levelInfo.countLevels) {
         state.progress.currentLevel += 1;
         return;
       }
 
       state.progress.currentLevel = 1;
 
-      if (state.progress.currentRound < state.countRounds) {
+      if (state.progress.currentRound < state.levelInfo.countRounds) {
         state.progress.currentRound += 1;
         return;
       }
@@ -159,7 +163,7 @@ const gameStatusSlice = createSlice({
     },
 
     setCountLevels: (state, action: PayloadAction<number>) => {
-      state.countLevels = action.payload;
+      state.levelInfo.countLevels = action.payload;
     },
   },
 });
