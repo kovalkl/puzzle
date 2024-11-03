@@ -26,3 +26,8 @@ export const getSentence = createSelector(
   getSentenceData,
   (sentenceData) => sentenceData?.textExample || '',
 );
+
+export const getTranslation = createSelector(
+  getSentenceData,
+  (sentenceData) => sentenceData?.textExampleTranslate || '',
+);
