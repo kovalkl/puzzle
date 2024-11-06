@@ -1,0 +1,15 @@
+@import '@/styles/variables.sass'
+
+.audio
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: pointer
+
+  & path
+    transition: fill 0.3s
+
+  @media (any-hover: hover)
+    &:hover
+      & path
+        fill: $accent-color

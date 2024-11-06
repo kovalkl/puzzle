@@ -48,9 +48,9 @@ const initialState: GameStatusSliceType = {
     gameField: [],
   },
   hints: {
-    isAudioEnabled: false,
+    isAudioEnabled: true,
     isImageEnabled: true,
-    isTranslationEnabled: false,
+    isTranslationEnabled: true,
   },
   isShowCorrectness: false,
   isSentenceCorrect: false,

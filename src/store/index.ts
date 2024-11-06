@@ -1,3 +1,4 @@
+import gameAudioReducer from '@/store/gameAudioSlice';
 import gameDataReducer from '@/store/gameDataSlice';
 import gameImageReducer from '@/store/gameImageSlice';
 import gameStatusReducer from '@/store/gameStatusSlice';
@@ -10,6 +11,7 @@ const store = configureStore({
     gameData: gameDataReducer,
     gameStatus: gameStatusReducer,
     gameImage: gameImageReducer,
+    gameAudio: gameAudioReducer,
   },
 });
 

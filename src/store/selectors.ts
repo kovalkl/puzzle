@@ -1,6 +1,5 @@
 import { RootState } from '@/store';
 import { LevelDataType, WordsType } from '@/store/types';
-import { createSelector } from '@reduxjs/toolkit';
 
 const getCurrentLevelData = (state: RootState) => {
   const { currentRound, currentLevel } = state.gameStatus.progress;
@@ -21,13 +20,3 @@ export const getLevelData = (state: RootState): LevelDataType | null => {
   const currentLevelData = getCurrentLevelData(state);
   return currentLevelData?.levelData || null;
 };
-
-export const getSentence = createSelector(
-  getSentenceData,
-  (sentenceData) => sentenceData?.textExample || '',
-);
-
-export const getTranslation = createSelector(
-  getSentenceData,
-  (sentenceData) => sentenceData?.textExampleTranslate || '',
-);

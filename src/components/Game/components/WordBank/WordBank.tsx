@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
 import { movePuzzleToGameField, setPuzzles } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getSentence } from '@/store/selectors';
+import { getSentenceData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 
 import styles from '@/components/Game/components/WordBank/WordBank.module.sass';
@@ -14,7 +14,7 @@ type WordBankProps = {
 
 export const WordBank = ({ imageSrc }: WordBankProps) => {
   const dispatch = useAppDispatch();
-  const sentenceText = useAppSelector(getSentence);
+  const sentenceText = useAppSelector(getSentenceData)?.textExample || '';
   const puzzles = useAppSelector((state) => state.gameStatus.gameData.wordBank);
   useEffect(() => {
     dispatch(setPuzzles(sentenceText));

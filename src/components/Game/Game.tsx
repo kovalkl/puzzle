@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { ActionButtons } from '@/components/Game/components/ActionButtons/ActionButtons';
 import { GameField } from '@/components/Game/components/GameField/GameField';
 import { HintsBlock } from '@/components/Game/components/HintsBlock/HintsBlock';
+import { SentenceAudio } from '@/components/Game/components/SentenceAudio/SentenceAudio';
 import { Translation } from '@/components/Game/components/Translation/Translation';
 import { WordBank } from '@/components/Game/components/WordBank/WordBank';
 import { fetchImage } from '@/store/gameImageSlice';
@@ -28,7 +29,10 @@ export const Game = () => {
       <div className={styles.game__wrapper}>
         <HintsBlock />
         <GameField imageSrc={fetchedImage || ''} />
-        <Translation />
+        <div className={styles.game__sentenceHints}>
+          <SentenceAudio />
+          <Translation />
+        </div>
         <WordBank imageSrc={fetchedImage || ''} />
         <ActionButtons />
       </div>

@@ -13,7 +13,7 @@ const initialState: gameImageSliceType = {
 };
 
 export const fetchImage = createAsyncThunk(
-  'rounds/fetchImage',
+  'gameImage/fetchImage',
   async ({ imageSrc }: { imageSrc: string }) => {
     const response = await fetch(
       `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/images/${imageSrc}`,
