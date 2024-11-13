@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
 
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
-import { movePuzzleToGameField, setPuzzles } from '@/store/gameStatusSlice';
+import {
+  activateCheckButton,
+  deactivateCheckButton,
+} from '@/store/actionButtonSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getSentenceData } from '@/store/selectors';
+import {
+  movePuzzleToGameField,
+  setPuzzles,
+} from '@/store/puzzleInteractionSlice';
+import { getLevelData, getSentenceData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 
 import styles from '@/components/Game/components/WordBank/WordBank.module.sass';
@@ -15,10 +22,22 @@ type WordBankProps = {
 export const WordBank = ({ imageSrc }: WordBankProps) => {
   const dispatch = useAppDispatch();
   const sentenceText = useAppSelector(getSentenceData)?.textExample || '';
-  const puzzles = useAppSelector((state) => state.gameStatus.gameData.wordBank);
+  const { author, name, year } = useAppSelector(getLevelData) || {};
+  const { wordBank: puzzles, isShowLevelInfo } = useAppSelector(
+    (state) => state.puzzleInteraction,
+  );
+
   useEffect(() => {
     dispatch(setPuzzles(sentenceText));
   }, [dispatch, sentenceText]);
+
+  useEffect(() => {
+    if (!puzzles.length) {
+      dispatch(activateCheckButton());
+    } else {
+      dispatch(deactivateCheckButton());
+    }
+  }, [puzzles.length, dispatch]);
 
   const onMovePuzzleToGameField = (puzzle: PuzzleType) => {
     dispatch(movePuzzleToGameField(puzzle));
@@ -27,7 +46,12 @@ export const WordBank = ({ imageSrc }: WordBankProps) => {
   return (
     <div className={styles.wordBank}>
       <div className={styles.wordBank__wrapper}>
-        {Boolean(puzzles) &&
+        {isShowLevelInfo ? (
+          <div
+            className={styles.wordBank__info}
+          >{`${author} - ${name} (${year})`}</div>
+        ) : (
+          Boolean(puzzles) &&
           puzzles.map((puzzle) => (
             <WordItem
               key={puzzle.id}
@@ -35,7 +59,8 @@ export const WordBank = ({ imageSrc }: WordBankProps) => {
               imageSrc={imageSrc}
               onMovePuzzle={() => onMovePuzzleToGameField(puzzle)}
             />
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

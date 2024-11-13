@@ -15,6 +15,9 @@ import styles from '@/components/Game/Game.module.sass';
 export const Game = () => {
   const dispatch = useAppDispatch();
   const imageSrc = useAppSelector(getLevelData)?.imageSrc;
+  const isShowLevelInfo = useAppSelector(
+    (state) => state.puzzleInteraction.isShowLevelInfo,
+  );
 
   useEffect(() => {
     if (imageSrc) {
@@ -25,13 +28,17 @@ export const Game = () => {
   const fetchedImage = useAppSelector((state) => state.gameImage.imageUrl);
 
   return (
-    <div className={`${styles.game} container`}>
+    <div className={`${styles.game}`}>
       <div className={styles.game__wrapper}>
         <HintsBlock />
         <GameField imageSrc={fetchedImage || ''} />
         <div className={styles.game__sentenceHints}>
-          <SentenceAudio />
-          <Translation />
+          {!isShowLevelInfo && (
+            <>
+              <SentenceAudio />
+              <Translation />
+            </>
+          )}
         </div>
         <WordBank imageSrc={fetchedImage || ''} />
         <ActionButtons />

@@ -10,12 +10,8 @@ import styles from '@/components/Game/components/SentenceAudio/SentenceAudio.mod
 
 export const SentenceAudio = () => {
   const audioExample = useAppSelector(getSentenceData)?.audioExample || '';
-  const {
-    gameAudio: { audioUrl },
-    gameStatus: {
-      hints: { isAudioEnabled },
-    },
-  } = useAppSelector((state) => state);
+  const isAudioEnabled = useAppSelector((state) => state.hint.isAudioEnabled);
+  const audioUrl = useAppSelector((state) => state.gameAudio.audioUrl);
   const dispatch = useAppDispatch();
 
   const onPlayAudio = () => {

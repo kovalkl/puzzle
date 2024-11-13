@@ -6,14 +6,14 @@ import {
   changeAudioHint,
   changeImageHint,
   changeTranslationHint,
-} from '@/store/gameStatusSlice';
+} from '@/store/hintSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 import styles from '@/components/Game/components/HintsBlock/HintsBlock.module.sass';
 
 export const HintsBlock = () => {
   const { isTranslationEnabled, isImageEnabled, isAudioEnabled } =
-    useAppSelector((state) => state.gameStatus.hints);
+    useAppSelector((state) => state.hint);
 
   const dispatch = useAppDispatch();
 

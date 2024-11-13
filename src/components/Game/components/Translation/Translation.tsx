@@ -3,7 +3,7 @@ import { getSentenceData } from '@/store/selectors';
 
 export const Translation = () => {
   const isTranslationEnabled = useAppSelector(
-    (state) => state.gameStatus.hints.isTranslationEnabled,
+    (state) => state.hint.isTranslationEnabled,
   );
 
   const translation =
