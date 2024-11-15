@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { Select } from '@/components/Header/components/Select/Select';
+import { setDefaultButtons } from '@/store/actionButtonSlice';
 import { fetchRounds } from '@/store/gameDataSlice';
 import {
   setCountLevels,
@@ -8,6 +9,10 @@ import {
   setCurrentRound,
 } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  setIsShowLevelInfo,
+  setIsShowResult,
+} from '@/store/puzzleInteractionSlice';
 
 export const StageSelector = () => {
   const {
@@ -27,6 +32,12 @@ export const StageSelector = () => {
       dispatch(setCountLevels(rounds[currentRound].roundsCount));
     }
   }, [currentRound, dispatch, rounds]);
+
+  useEffect(() => {
+    dispatch(setIsShowResult(false));
+    dispatch(setIsShowLevelInfo(false));
+    dispatch(setDefaultButtons());
+  }, [currentRound, currentLevel, dispatch]);
 
   return (
     <>

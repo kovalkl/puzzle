@@ -10,6 +10,7 @@ type PuzzleInteractionType = {
   currentSentenceText: string;
   isGameFieldDisabled: boolean;
   isShowLevelInfo: boolean;
+  isShowResult: boolean;
 };
 
 const initialState: PuzzleInteractionType = {
@@ -20,6 +21,7 @@ const initialState: PuzzleInteractionType = {
   currentSentenceText: '',
   isGameFieldDisabled: false,
   isShowLevelInfo: false,
+  isShowResult: false,
 };
 
 export const puzzleInteractionSlice = createSlice({
@@ -77,16 +79,14 @@ export const puzzleInteractionSlice = createSlice({
       });
     },
 
-    resetIsSentenceCorrect: (state) => {
-      state.isSentenceCorrect = false;
+    setIsSentenceCorrect: (state, action: PayloadAction<boolean>) => {
+      state.isSentenceCorrect = action.payload;
     },
 
     setCorrectPuzzles: (state) => {
       state.gameField = getPuzzleArray(state.currentSentenceText);
 
       state.wordBank = [];
-
-      state.isSentenceCorrect = true;
     },
 
     setGameFieldDisabled: (state, action: PayloadAction<boolean>) => {
@@ -95,6 +95,10 @@ export const puzzleInteractionSlice = createSlice({
 
     setIsShowLevelInfo: (state, action: PayloadAction<boolean>) => {
       state.isShowLevelInfo = action.payload;
+    },
+
+    setIsShowResult: (state, action: PayloadAction<boolean>) => {
+      state.isShowResult = action.payload;
     },
   },
 });
@@ -108,6 +112,7 @@ export const {
   checkCorrectness,
   setCorrectPuzzles,
   setGameFieldDisabled,
-  resetIsSentenceCorrect,
+  setIsSentenceCorrect,
   setIsShowLevelInfo,
+  setIsShowResult,
 } = puzzleInteractionSlice.actions;

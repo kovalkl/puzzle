@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
-import {
-  activateCheckButton,
-  deactivateCheckButton,
-} from '@/store/actionButtonSlice';
+import { setCheckButtonDisabled } from '@/store/actionButtonSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   movePuzzleToGameField,
@@ -33,9 +30,9 @@ export const WordBank = ({ imageSrc }: WordBankProps) => {
 
   useEffect(() => {
     if (!puzzles.length) {
-      dispatch(activateCheckButton());
+      dispatch(setCheckButtonDisabled(false));
     } else {
-      dispatch(deactivateCheckButton());
+      dispatch(setCheckButtonDisabled(true));
     }
   }, [puzzles.length, dispatch]);
 

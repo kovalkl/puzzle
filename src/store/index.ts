@@ -5,6 +5,7 @@ import gameImageReducer from '@/store/gameImageSlice';
 import gameStatusReducer from '@/store/gameStatusSlice';
 import hintReducer from '@/store/hintSlice';
 import puzzleInteractionReducer from '@/store/puzzleInteractionSlice';
+import solvedSentenceReducer from '@/store/solvedSentenceSlice';
 import userProgressReducer from '@/store/userProgressSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -18,6 +19,7 @@ const store = configureStore({
     hint: hintReducer,
     actionButton: actionButtonReducer,
     puzzleInteraction: puzzleInteractionReducer,
+    solvedSentence: solvedSentenceReducer,
   },
 });
 

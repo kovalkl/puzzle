@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type ActionButtonType = {
   checkButton: {
@@ -26,12 +26,8 @@ export const actionButtonSlice = createSlice({
   name: 'actionButton',
   initialState,
   reducers: {
-    activateCheckButton: (state) => {
-      state.checkButton.disabled = false;
-    },
-
-    deactivateCheckButton: (state) => {
-      state.checkButton.disabled = true;
+    setCheckButtonDisabled: (state, action: PayloadAction<boolean>) => {
+      state.checkButton.disabled = action.payload;
     },
 
     setCheckButtonToCheck: (state) => {
@@ -42,12 +38,8 @@ export const actionButtonSlice = createSlice({
       state.checkButton.text = 'Continue';
     },
 
-    activateSkipButton: (state) => {
-      state.skipButton.disabled = false;
-    },
-
-    deactivateSkipButton: (state) => {
-      state.skipButton.disabled = true;
+    setSkipButtonDisabled: (state, action: PayloadAction<boolean>) => {
+      state.skipButton.disabled = action.payload;
     },
 
     setSkipButtonToSkip: (state) => {
@@ -57,18 +49,24 @@ export const actionButtonSlice = createSlice({
     setSkipButtonToResult: (state) => {
       state.skipButton.text = 'Result';
     },
+
+    setDefaultButtons: (state) => {
+      state.checkButton.text = 'Check';
+      state.skipButton.text = "I don't know";
+      state.checkButton.disabled = true;
+      state.skipButton.disabled = false;
+    },
   },
 });
 
 export const {
-  activateCheckButton,
-  deactivateCheckButton,
+  setCheckButtonDisabled,
+  setSkipButtonDisabled,
   setCheckButtonToCheck,
   setCheckButtonToContinue,
-  activateSkipButton,
-  deactivateSkipButton,
   setSkipButtonToSkip,
   setSkipButtonToResult,
+  setDefaultButtons,
 } = actionButtonSlice.actions;
 
 export default actionButtonSlice.reducer;
