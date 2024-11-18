@@ -1,3 +1,5 @@
+import '@/components/Result/components/SentenceList/SentenceList';
+import { SentenceList } from '@/components/Result/components/SentenceList/SentenceList';
 import Button from '@/components/UI/Button/Button';
 import { setDefaultButtons } from '@/store/actionButtonSlice';
 import { setNextSentence } from '@/store/gameStatusSlice';
@@ -21,27 +23,15 @@ export const Result = () => {
 
   return (
     <div className={styles.result}>
-      <img className={styles.result__image} src={imageSrc} alt='result' />
-      <span>{`${author} - ${name} (${year})`}</span>
-      {solved.length > 0 && (
-        <>
-          <span>I know</span>
-          <ul>
-            {solved.map((sentence) => (
-              <li key={sentence}>{sentence}</li>
-            ))}
-          </ul>
-        </>
-      )}
-      {unsolved.length > 0 && (
-        <>
-          <span>I don't know</span>
-          <ul>
-            {unsolved.map((sentence) => (
-              <li key={sentence}>{sentence}</li>
-            ))}
-          </ul>
-        </>
+      <div className={styles.result__levelInfo}>
+        <img className={styles.result__image} src={imageSrc} alt='result' />
+        <span
+          className={styles.result__levelName}
+        >{`${author} - ${name} (${year})`}</span>
+      </div>
+      {Boolean(solved.length) && <SentenceList title='I know' list={solved} />}
+      {Boolean(unsolved.length) && (
+        <SentenceList title="I don't know" list={unsolved} />
       )}
       <Button onClick={onContinue}>Continue</Button>
     </div>
