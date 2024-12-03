@@ -1,5 +1,6 @@
 import { getHeightOverlay } from '@/components/Game/components/GameField/getHeightOverlay';
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
+import { WordList } from '@/components/Game/components/WordList/WordList';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { movePuzzleToWordBank } from '@/store/puzzleInteractionSlice';
 import { PuzzleType } from '@/store/types';
@@ -10,19 +11,29 @@ const COUNT_SENTENCES = 10;
 
 type GameFieldProps = {
   imageSrc: string;
+  puzzles: PuzzleType[];
+  puzzlesIds: number[];
 };
 
-export const GameField = ({ imageSrc }: GameFieldProps) => {
+export const GameField = ({
+  imageSrc,
+  puzzles,
+  puzzlesIds,
+}: GameFieldProps) => {
   const currentSentenceCount = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
   );
-  const { gameField, isShowCorrectness, isGameFieldDisabled, isShowLevelInfo } =
+  const { isShowCorrectness, isGameFieldDisabled, isShowLevelInfo } =
     useAppSelector((state) => state.puzzleInteraction);
   const dispatch = useAppDispatch();
 
   const onMovePuzzleToWordBank = (puzzle: PuzzleType) => {
     dispatch(movePuzzleToWordBank(puzzle));
   };
+
+  const puzzlesOnGameFiled = puzzles.filter(
+    (puzzle) => puzzle.wordList === 'gameField',
+  );
 
   return (
     <div
@@ -44,18 +55,20 @@ export const GameField = ({ imageSrc }: GameFieldProps) => {
             className={styles.gameField__row}
             id={`row_${index + 1}`}
           >
-            {currentSentenceCount === index + 1 &&
-              Boolean(gameField.length) &&
-              gameField.map((puzzle) => (
-                <WordItem
-                  disabled={isGameFieldDisabled}
-                  isCorrect={isShowCorrectness ? puzzle.isCorrect : null}
-                  key={puzzle.id}
-                  wordData={puzzle}
-                  imageSrc={imageSrc}
-                  onMovePuzzle={() => onMovePuzzleToWordBank(puzzle)}
-                />
-              ))}
+            <WordList items={puzzlesIds} type='gameField'>
+              {currentSentenceCount === index + 1 &&
+                Boolean(puzzlesOnGameFiled.length) &&
+                puzzlesOnGameFiled.map((puzzle) => (
+                  <WordItem
+                    disabled={isGameFieldDisabled}
+                    isCorrect={isShowCorrectness ? puzzle.isCorrect : null}
+                    key={puzzle.id}
+                    wordData={puzzle}
+                    imageSrc={imageSrc}
+                    onMovePuzzle={() => onMovePuzzleToWordBank(puzzle)}
+                  />
+                ))}
+            </WordList>
           </div>
         ))}
     </div>

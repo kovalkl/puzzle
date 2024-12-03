@@ -24,9 +24,12 @@ export type RoundType = {
   }[];
 };
 
+export type WordListType = 'wordBank' | 'gameField';
+
 export type PuzzleType = {
   id: number;
   text: string;
-  width: number;
+  widthPx: number;
   isCorrect?: boolean;
+  wordList: WordListType;
 };

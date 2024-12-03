@@ -1,10 +1,9 @@
-import { getPuzzleArray, getShuffledPuzzleArray } from '@/store/getPuzzleArray';
+import { getShuffledPuzzleArray } from '@/store/getPuzzleArray';
 import { PuzzleType } from '@/store/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type PuzzleInteractionType = {
-  wordBank: PuzzleType[];
-  gameField: PuzzleType[];
+  puzzles: PuzzleType[];
   isSentenceCorrect: boolean;
   isShowCorrectness: boolean;
   currentSentenceText: string;
@@ -14,8 +13,7 @@ type PuzzleInteractionType = {
 };
 
 const initialState: PuzzleInteractionType = {
-  wordBank: [],
-  gameField: [],
+  puzzles: [],
   isSentenceCorrect: false,
   isShowCorrectness: false,
   currentSentenceText: '',
@@ -28,43 +26,60 @@ export const puzzleInteractionSlice = createSlice({
   name: 'puzzleInteraction',
   initialState,
   reducers: {
-    setPuzzles: (state, action: PayloadAction<string>) => {
-      state.gameField = [];
+    setNewPuzzles: (
+      state,
+      action: PayloadAction<{ sentence: string; containerWidth: number }>,
+    ) => {
+      state.currentSentenceText = action.payload.sentence;
 
-      state.currentSentenceText = action.payload;
+      state.puzzles = getShuffledPuzzleArray(
+        action.payload.sentence,
+        action.payload.containerWidth,
+      );
+    },
 
-      state.wordBank = getShuffledPuzzleArray(action.payload);
+    setPuzzles: (state, action: PayloadAction<PuzzleType[]>) => {
+      state.isShowCorrectness = false;
+      state.puzzles = action.payload;
     },
 
     movePuzzleToGameField: (state, action: PayloadAction<PuzzleType>) => {
-      state.gameField.push(action.payload);
+      const filteredPuzzles = state.puzzles.filter((puzzle) => {
+        return puzzle.id !== action.payload.id;
+      });
 
-      state.wordBank = state.wordBank.filter(
-        (puzzle) => puzzle.id !== action.payload.id,
-      );
+      const currentPuzzle = state.puzzles.find((puzzle) => {
+        return puzzle.id === action.payload.id;
+      })!;
+      currentPuzzle.wordList = 'gameField';
+
+      state.puzzles = [...filteredPuzzles, currentPuzzle];
     },
 
     movePuzzleToWordBank: (state, action: PayloadAction<PuzzleType>) => {
-      state.isShowCorrectness = false;
+      const filteredPuzzles = state.puzzles.filter((puzzle) => {
+        return puzzle.id !== action.payload.id;
+      });
 
-      state.wordBank.push(action.payload);
+      const currentPuzzle = state.puzzles.find((puzzle) => {
+        return puzzle.id === action.payload.id;
+      })!;
+      currentPuzzle.wordList = 'wordBank';
 
-      state.gameField = state.gameField.filter(
-        (puzzle) => puzzle.id !== action.payload.id,
-      );
+      state.puzzles = [...filteredPuzzles, currentPuzzle];
     },
 
     checkCorrectness: (state, action: PayloadAction<boolean>) => {
       state.isShowCorrectness = true;
       if (action) {
-        state.gameField = state.gameField.map((puzzle, index) => {
+        state.puzzles = state.puzzles.map((puzzle, index) => {
           return {
             ...puzzle,
             isCorrect: puzzle.id === index + 1,
           };
         });
       } else {
-        state.gameField = state.gameField.map((puzzle, index) => {
+        state.puzzles = state.puzzles.map((puzzle, index) => {
           return {
             ...puzzle,
             isCorrect:
@@ -74,7 +89,7 @@ export const puzzleInteractionSlice = createSlice({
         });
       }
 
-      state.isSentenceCorrect = state.gameField.every((puzzle) => {
+      state.isSentenceCorrect = state.puzzles.every((puzzle) => {
         return puzzle.isCorrect;
       });
     },
@@ -84,9 +99,14 @@ export const puzzleInteractionSlice = createSlice({
     },
 
     setCorrectPuzzles: (state) => {
-      state.gameField = getPuzzleArray(state.currentSentenceText);
+      const defaultPuzzles = state.puzzles.sort((a, b) => a.id - b.id);
 
-      state.wordBank = [];
+      state.puzzles = defaultPuzzles.map((puzzle) => {
+        return {
+          ...puzzle,
+          wordList: 'gameField',
+        };
+      });
     },
 
     setGameFieldDisabled: (state, action: PayloadAction<boolean>) => {
@@ -106,6 +126,7 @@ export const puzzleInteractionSlice = createSlice({
 export default puzzleInteractionSlice.reducer;
 
 export const {
+  setNewPuzzles,
   setPuzzles,
   movePuzzleToGameField,
   movePuzzleToWordBank,
