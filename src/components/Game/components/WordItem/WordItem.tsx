@@ -1,6 +1,5 @@
 import { PuzzleType } from '@/store/types';
 import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 import styles from '@/components/Game/components/WordItem/WordItem.module.sass';
 
@@ -18,24 +17,18 @@ export const WordItem = ({
   isCorrect,
   disabled,
 }: WordItemProps) => {
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: wordData.id,
-    data: {
-      type: 'puzzle',
-      wordData,
-    },
-  });
+  const { setNodeRef, attributes, listeners, transition, isDragging } =
+    useSortable({
+      id: wordData.id,
+      data: {
+        type: 'puzzle',
+        wordData,
+      },
+    });
 
   const style = {
     transition,
-    transform: CSS.Transform.toString(transform),
+    cursor: 'grab',
     width: `${wordData.widthPx}px`,
   };
 
