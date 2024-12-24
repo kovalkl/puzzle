@@ -10,7 +10,11 @@ import { WordBank } from '@/components/Game/components/WordBank/WordBank';
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
 import { fetchImage } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setPuzzles } from '@/store/puzzleInteractionSlice';
+import {
+  movePuzzleToGameField,
+  movePuzzleToWordBank,
+  setPuzzles,
+} from '@/store/puzzleInteractionSlice';
 import { getLevelData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 import {
@@ -23,7 +27,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
+import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 
 import styles from '@/components/Game/Game.module.sass';
 
@@ -60,32 +64,33 @@ export const Game = () => {
   return (
     <div className={`${styles.game}`}>
       <div className={styles.game__wrapper}>
+        <HintsBlock />
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
         >
-          <HintsBlock />
-          <GameField
-            imageSrc={fetchedImage || ''}
-            puzzles={puzzles}
-            puzzlesIds={puzzlesIds}
-          />
-          <div className={styles.game__sentenceHints}>
-            {!isShowLevelInfo && (
-              <>
-                <SentenceAudio />
-                <Translation />
-              </>
-            )}
-          </div>
-          <WordBank
-            imageSrc={fetchedImage || ''}
-            puzzles={puzzles}
-            puzzlesIds={puzzlesIds}
-          />
-          <ActionButtons />
+          <SortableContext items={['wordBank', 'gameField']}>
+            <GameField
+              imageSrc={fetchedImage || ''}
+              puzzles={puzzles}
+              puzzlesIds={puzzlesIds}
+            />
+            <div className={styles.game__sentenceHints}>
+              {!isShowLevelInfo && (
+                <>
+                  <SentenceAudio />
+                  <Translation />
+                </>
+              )}
+            </div>
+            <WordBank
+              imageSrc={fetchedImage || ''}
+              puzzles={puzzles}
+              puzzlesIds={puzzlesIds}
+            />
+          </SortableContext>
           {createPortal(
             <DragOverlay>
               {activePuzzle && (
@@ -100,6 +105,7 @@ export const Game = () => {
             document.body,
           )}
         </DndContext>
+        <ActionButtons />
       </div>
     </div>
   );
@@ -141,14 +147,35 @@ export const Game = () => {
 
     if (activeId === overId) return;
 
-    dispatch(
-      setPuzzles(
-        arrayMove(
-          puzzles,
-          puzzles.findIndex((puzzle) => puzzle.id === activeId),
-          puzzles.findIndex((puzzle) => puzzle.id === overId),
-        ),
-      ),
-    );
+    if (over.data.current?.type === 'puzzle') {
+      if (
+        over.data.current.wordData.wordList ===
+        active.data.current?.wordData.wordList
+      ) {
+        dispatch(
+          setPuzzles(
+            arrayMove(
+              puzzles,
+              puzzles.findIndex((puzzle) => puzzle.id === activeId),
+              puzzles.findIndex((puzzle) => puzzle.id === overId),
+            ),
+          ),
+        );
+      } else {
+        if (over.data.current.wordData.wordList === 'gameField') {
+          dispatch(movePuzzleToGameField(active.data.current?.wordData));
+        } else if (over.data.current.wordData.wordList === 'wordBank') {
+          dispatch(movePuzzleToWordBank(active.data.current?.wordData));
+        }
+      }
+    }
+
+    if (over.data.current?.type === 'container') {
+      if (over.data.current.containerType === 'wordBank') {
+        dispatch(movePuzzleToWordBank(active.data.current?.wordData));
+      } else if (over.data.current.containerType === 'gameField') {
+        dispatch(movePuzzleToGameField(active.data.current?.wordData));
+      }
+    }
   }
 };
