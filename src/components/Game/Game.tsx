@@ -16,7 +16,7 @@ import {
   setPuzzles,
 } from '@/store/puzzleInteractionSlice';
 import { getLevelData } from '@/store/selectors';
-import { PuzzleType } from '@/store/types';
+import { PuzzleType, WordListType } from '@/store/types';
 import {
   DndContext,
   DragEndEvent,
@@ -113,7 +113,6 @@ export const Game = () => {
   function onDragStart(event: DragStartEvent) {
     if (event.active.data.current?.type === 'puzzle') {
       setActivePuzzle(event.active.data.current.wordData);
-      return;
     }
   }
 
@@ -162,11 +161,25 @@ export const Game = () => {
           ),
         );
       } else {
-        if (over.data.current.wordData.wordList === 'gameField') {
-          dispatch(movePuzzleToGameField(active.data.current?.wordData));
-        } else if (over.data.current.wordData.wordList === 'wordBank') {
-          dispatch(movePuzzleToWordBank(active.data.current?.wordData));
-        }
+        dispatch(
+          setPuzzles(
+            arrayMove(
+              [
+                ...puzzles.map((puzzle) => {
+                  return puzzle.id === activeId
+                    ? {
+                        ...puzzle,
+                        wordList: over.data.current?.wordData
+                          .wordList as WordListType,
+                      }
+                    : puzzle;
+                }),
+              ],
+              puzzles.findIndex((puzzle) => puzzle.id === activeId),
+              puzzles.findIndex((puzzle) => puzzle.id === overId),
+            ),
+          ),
+        );
       }
     }
 
