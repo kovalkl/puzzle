@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { WordItem } from '@/components/Game/components/WordItem/WordItem';
+import { LevelInfo } from '@/components/Game/components/LevelInfo/LevelInfo';
 import { WordList } from '@/components/Game/components/WordList/WordList';
 import { setCheckButtonDisabled } from '@/store/actionButtonSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {
-  movePuzzleToGameField,
-  setNewPuzzles,
-} from '@/store/puzzleInteractionSlice';
+import { setNewPuzzles } from '@/store/puzzleInteractionSlice';
 import { getLevelData, getSentenceData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 
@@ -37,7 +34,7 @@ export const WordBank = ({ imageSrc, puzzles, puzzlesIds }: WordBankProps) => {
     if (wordBankRef.current) {
       setWidth(wordBankRef.current.offsetWidth);
     }
-  }, [width]);
+  }, []);
 
   useEffect(() => {
     dispatch(setNewPuzzles({ sentence: sentenceText, containerWidth: width }));
@@ -54,21 +51,14 @@ export const WordBank = ({ imageSrc, puzzles, puzzlesIds }: WordBankProps) => {
   return (
     <div className={styles.wordBank} ref={wordBankRef}>
       {isShowLevelInfo ? (
-        <div
-          className={styles.wordBank__info}
-        >{`${author} - ${name} (${year})`}</div>
+        <LevelInfo author={author!} name={name!} year={year!} />
       ) : (
-        <WordList items={puzzlesIds} type='wordBank'>
-          {Boolean(puzzlesOnWordBank.length) &&
-            puzzlesOnWordBank.map((puzzle) => (
-              <WordItem
-                key={puzzle.id}
-                wordData={puzzle}
-                imageSrc={imageSrc}
-                onMovePuzzle={() => dispatch(movePuzzleToGameField(puzzle))}
-              />
-            ))}
-        </WordList>
+        <WordList
+          puzzlesIds={puzzlesIds}
+          type='wordBank'
+          puzzles={puzzlesOnWordBank}
+          imageSrc={imageSrc}
+        />
       )}
     </div>
   );

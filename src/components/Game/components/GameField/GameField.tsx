@@ -1,8 +1,6 @@
 import { getHeightOverlay } from '@/components/Game/components/GameField/getHeightOverlay';
-import { WordItem } from '@/components/Game/components/WordItem/WordItem';
 import { WordList } from '@/components/Game/components/WordList/WordList';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { movePuzzleToWordBank } from '@/store/puzzleInteractionSlice';
+import { useAppSelector } from '@/store/hooks';
 import { PuzzleType } from '@/store/types';
 
 import styles from '@/components/Game/components/GameField/GameField.module.sass';
@@ -23,13 +21,9 @@ export const GameField = ({
   const currentSentenceCount = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
   );
-  const { isShowCorrectness, isGameFieldDisabled, isShowLevelInfo } =
-    useAppSelector((state) => state.puzzleInteraction);
-  const dispatch = useAppDispatch();
-
-  const onMovePuzzleToWordBank = (puzzle: PuzzleType) => {
-    dispatch(movePuzzleToWordBank(puzzle));
-  };
+  const { isShowLevelInfo } = useAppSelector(
+    (state) => state.puzzleInteraction,
+  );
 
   const puzzlesOnGameFiled = puzzles.filter(
     (puzzle) => puzzle.wordList === 'gameField',
@@ -50,25 +44,15 @@ export const GameField = ({
       ></div>
       {!isShowLevelInfo &&
         [...Array(COUNT_SENTENCES)].map((_, index) => (
-          <div
-            key={index}
-            className={styles.gameField__row}
-            id={`row_${index + 1}`}
-          >
-            <WordList items={puzzlesIds} type='gameField'>
-              {currentSentenceCount === index + 1 &&
-                Boolean(puzzlesOnGameFiled.length) &&
-                puzzlesOnGameFiled.map((puzzle) => (
-                  <WordItem
-                    disabled={isGameFieldDisabled}
-                    isCorrect={isShowCorrectness ? puzzle.isCorrect : null}
-                    key={puzzle.id}
-                    wordData={puzzle}
-                    imageSrc={imageSrc}
-                    onMovePuzzle={() => onMovePuzzleToWordBank(puzzle)}
-                  />
-                ))}
-            </WordList>
+          <div key={index} className={styles.gameField__row}>
+            {currentSentenceCount === index + 1 && (
+              <WordList
+                puzzlesIds={puzzlesIds}
+                type='gameField'
+                puzzles={puzzlesOnGameFiled}
+                imageSrc={imageSrc}
+              />
+            )}
           </div>
         ))}
     </div>
