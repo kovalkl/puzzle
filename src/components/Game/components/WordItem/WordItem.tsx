@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/store/hooks';
 import { PuzzleType } from '@/store/types';
 import { useSortable } from '@dnd-kit/sortable';
 
@@ -17,6 +18,10 @@ export const WordItem = ({
   isCorrect,
   disabled,
 }: WordItemProps) => {
+  const { isGameFieldDisabled } = useAppSelector(
+    (state) => state.puzzleInteraction,
+  );
+
   const { setNodeRef, attributes, listeners, transition, isDragging } =
     useSortable({
       id: wordData.id,
@@ -24,6 +29,7 @@ export const WordItem = ({
         type: 'puzzle',
         wordData,
       },
+      disabled: isGameFieldDisabled,
     });
 
   const style = {

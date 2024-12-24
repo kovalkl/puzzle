@@ -23,7 +23,7 @@ export const WordList = ({
   puzzles,
   imageSrc,
 }: WordListProps) => {
-  const { setNodeRef } = useSortable({
+  const { setNodeRef, attributes, listeners } = useSortable({
     id: type,
     data: {
       type: 'container',
@@ -38,7 +38,7 @@ export const WordList = ({
 
   const dispatch = useAppDispatch();
   return (
-    <div ref={setNodeRef}>
+    <div ref={setNodeRef} {...attributes} {...listeners}>
       <SortableContext items={puzzlesIds}>
         <div className={styles.wordList}>
           {Boolean(puzzles.length) &&

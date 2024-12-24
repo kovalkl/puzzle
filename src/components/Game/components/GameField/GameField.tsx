@@ -21,6 +21,7 @@ export const GameField = ({
   const currentSentenceCount = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
   );
+
   const { isShowLevelInfo } = useAppSelector(
     (state) => state.puzzleInteraction,
   );
@@ -28,6 +29,10 @@ export const GameField = ({
   const puzzlesOnGameFiled = puzzles.filter(
     (puzzle) => puzzle.wordList === 'gameField',
   );
+
+  const getEmptyArray = () => {
+    return [...Array(COUNT_SENTENCES)].map((_, index) => index + 1);
+  };
 
   return (
     <div
@@ -43,7 +48,7 @@ export const GameField = ({
         }}
       ></div>
       {!isShowLevelInfo &&
-        [...Array(COUNT_SENTENCES)].map((_, index) => (
+        getEmptyArray().map((_, index) => (
           <div key={index} className={styles.gameField__row}>
             {currentSentenceCount === index + 1 && (
               <WordList

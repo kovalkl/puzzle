@@ -10,11 +10,7 @@ import { WordBank } from '@/components/Game/components/WordBank/WordBank';
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
 import { fetchImage } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {
-  movePuzzleToGameField,
-  movePuzzleToWordBank,
-  setPuzzles,
-} from '@/store/puzzleInteractionSlice';
+import { setPuzzles } from '@/store/puzzleInteractionSlice';
 import { getLevelData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 import {
@@ -138,11 +134,6 @@ export const Game = () => {
 
   function onDragOver(event: DragOverEvent) {
     const { over, active } = event;
-    const containerData = event.over?.data.current;
-    if (containerData && containerData.type === 'container') {
-      const overContainer = containerData.containerType;
-      console.log('Container Type:', overContainer);
-    }
     if (!over) return;
 
     const activeId = active.id;
@@ -150,27 +141,14 @@ export const Game = () => {
 
     if (activeId === overId) return;
 
-    if (
-      over.data.current?.wordData.wordList ===
-      active.data.current?.wordData.wordList
-    ) {
-      dispatch(
-        setPuzzles(
-          arrayMove(
-            puzzles,
-            puzzles.findIndex((puzzle) => puzzle.id === activeId),
-            puzzles.findIndex((puzzle) => puzzle.id === overId),
-          ),
+    dispatch(
+      setPuzzles(
+        arrayMove(
+          puzzles,
+          puzzles.findIndex((puzzle) => puzzle.id === activeId),
+          puzzles.findIndex((puzzle) => puzzle.id === overId),
         ),
-      );
-    } else {
-      const activePuzzle = puzzles.find((puzzle) => puzzle.id === activeId)!;
-
-      if (over.data.current?.wordData.wordList === 'gameField') {
-        dispatch(movePuzzleToGameField(activePuzzle));
-      } else if (over.data.current?.wordData.wordList === 'wordBank') {
-        dispatch(movePuzzleToWordBank(activePuzzle));
-      }
-    }
+      ),
+    );
   }
 };
