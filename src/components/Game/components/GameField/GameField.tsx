@@ -1,4 +1,4 @@
-import { getHeightOverlay } from '@/components/Game/components/GameField/getHeightOverlay';
+import { getOverlayHeight } from '@/components/Game/components/GameField/getOverlayHeight';
 import { WordList } from '@/components/Game/components/WordList/WordList';
 import { useAppSelector } from '@/store/hooks';
 import { PuzzleType } from '@/store/types';
@@ -42,9 +42,7 @@ export const GameField = ({
       <div
         className={styles.gameField__overlay}
         style={{
-          height: isShowLevelInfo
-            ? '0%'
-            : getHeightOverlay(currentSentenceCount),
+          height: `${isShowLevelInfo ? 0 : getOverlayHeight(currentSentenceCount)}%`,
         }}
       ></div>
       {!isShowLevelInfo &&
