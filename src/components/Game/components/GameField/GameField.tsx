@@ -39,12 +39,6 @@ export const GameField = ({
       className={styles.gameField}
       style={{ backgroundImage: `url(${imageSrc})` }}
     >
-      <div
-        className={styles.gameField__overlay}
-        style={{
-          height: `${isShowLevelInfo ? 0 : getOverlayHeight(currentSentenceCount)}%`,
-        }}
-      ></div>
       {!isShowLevelInfo &&
         getEmptyArray().map((_, index) => (
           <div key={index} className={styles.gameField__row}>
@@ -58,6 +52,12 @@ export const GameField = ({
             )}
           </div>
         ))}
+      <div
+        className={styles.gameField__overlay}
+        style={{
+          height: `${isShowLevelInfo ? 0 : getOverlayHeight(currentSentenceCount)}%`,
+        }}
+      ></div>
     </div>
   );
 };

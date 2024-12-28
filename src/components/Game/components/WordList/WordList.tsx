@@ -40,7 +40,9 @@ export const WordList = ({
   return (
     <div ref={setNodeRef} {...attributes} {...listeners}>
       <SortableContext items={puzzlesIds}>
-        <div className={styles.wordList}>
+        <div
+          className={`${styles.wordList} ${type === 'gameField' ? styles.gameField : ''}`}
+        >
           {Boolean(puzzles.length) &&
             puzzles.map((puzzle) => (
               <WordItem

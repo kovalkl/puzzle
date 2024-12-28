@@ -4,7 +4,6 @@ const getPuzzleArray = (
   sentence: string,
   containerWidth: number,
 ): PuzzleType[] => {
-  const contentWidth = containerWidth - 4;
   const sentenceLength = sentence.replace(/\s/g, '').length;
 
   const shuffledArray = sentence.split(' ').map((text, index) => ({
@@ -16,7 +15,7 @@ const getPuzzleArray = (
   const wordsWithWidths = shuffledArray.map((word) => ({
     ...word,
     widthPx: Math.max(
-      Math.floor((word.text.length / sentenceLength) * contentWidth),
+      Math.floor((word.text.length / sentenceLength) * containerWidth),
       5,
     ),
   }));
@@ -28,7 +27,7 @@ const getPuzzleArray = (
 
   if (wordsWithWidths.length > 0) {
     wordsWithWidths[wordsWithWidths.length - 1].widthPx +=
-      contentWidth - totalWidth;
+      containerWidth - totalWidth;
   }
 
   return wordsWithWidths;
