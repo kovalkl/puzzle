@@ -7,9 +7,5 @@ type LevelInfoProps = {
 };
 
 export const LevelInfo = ({ author, name, year }: LevelInfoProps) => {
-  return (
-    <div
-      className={styles.wordBank__info}
-    >{`${author} - ${name} (${year})`}</div>
-  );
+  return <div className={styles.info}>{`${author} - ${name} (${year})`}</div>;
 };
