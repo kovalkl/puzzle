@@ -17,10 +17,13 @@ export const WordItem = ({
   onMovePuzzle,
   isCorrect,
   disabled,
+  imageSrc,
 }: WordItemProps) => {
   const { isGameFieldDisabled } = useAppSelector(
     (state) => state.puzzleInteraction,
   );
+
+  const isImageEnabled = useAppSelector((state) => state.hint.isImageEnabled);
 
   const { setNodeRef, attributes, listeners, transition, isDragging } =
     useSortable({
@@ -36,6 +39,10 @@ export const WordItem = ({
     transition,
     cursor: 'grab',
     width: `${wordData.widthPx}px`,
+    backgroundImage: isImageEnabled ? `url(${imageSrc})` : 'none',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: `0 0`,
   };
 
   if (isDragging) {
@@ -57,7 +64,9 @@ export const WordItem = ({
       {...listeners}
       onClick={disabled ? undefined : onMovePuzzle}
     >
-      {wordData.text}
+      <div className={isImageEnabled ? styles.wordItem__textOverlay : ''}>
+        {wordData.text}
+      </div>
     </div>
   );
 };
