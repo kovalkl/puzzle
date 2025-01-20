@@ -18,6 +18,7 @@ const getPuzzleArray = (
       Math.floor((word.text.length / sentenceLength) * containerWidth),
       5,
     ),
+    offsetX: 0,
   }));
 
   const totalWidth = wordsWithWidths.reduce(
@@ -30,7 +31,18 @@ const getPuzzleArray = (
       containerWidth - totalWidth;
   }
 
-  return wordsWithWidths;
+  const wordsWithWidthsAndOffsets = wordsWithWidths.map((word, index) => {
+    return {
+      ...word,
+      offsetX:
+        index === 0
+          ? 0
+          : wordsWithWidths[index - 1].offsetX +
+            wordsWithWidths[index - 1].widthPx,
+    };
+  });
+
+  return wordsWithWidthsAndOffsets;
 };
 
 export const getShuffledPuzzleArray = (
