@@ -40,9 +40,8 @@ export const WordItem = ({
     cursor: 'grab',
     width: `${wordData.widthPx}px`,
     backgroundImage: isImageEnabled ? `url(${imageSrc})` : 'none',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: `0 0`,
+    backgroundSize: '640px auto',
+    backgroundPosition: `${wordData.offsetX}px 0`,
   };
 
   if (isDragging) {

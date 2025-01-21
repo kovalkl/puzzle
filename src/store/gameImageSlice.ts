@@ -1,19 +1,32 @@
+import { ImageParamsType } from '@/store/types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export type gameImageSliceType = {
   status: null | 'pending' | 'fulfilled' | 'rejected';
   error: null | string;
   imageUrl: string | null;
-  imageHeight: number | null;
-  imageWidth: number | null;
+  imageParams: {
+    height: number | null;
+    width: number | null;
+  };
+  imageScale: {
+    width: number | null;
+    height: number | null;
+  };
 };
 
 const initialState: gameImageSliceType = {
   status: null,
   error: null,
   imageUrl: null,
-  imageHeight: null,
-  imageWidth: null,
+  imageParams: {
+    height: null,
+    width: null,
+  },
+  imageScale: {
+    width: null,
+    height: null,
+  },
 };
 
 export const fetchImage = createAsyncThunk(
@@ -48,7 +61,19 @@ export const fetchImage = createAsyncThunk(
 const gameImageSlice = createSlice({
   name: 'gameImage',
   initialState,
-  reducers: {},
+  reducers: {
+    setImageScale(state, action: PayloadAction<ImageParamsType>) {
+      const scale = Math.max(
+        action.payload.width / state.imageParams.width!,
+        action.payload.height / state.imageParams.height!,
+      );
+
+      state.imageScale = {
+        width: state.imageParams.width! * scale,
+        height: state.imageParams.height! * scale,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       fetchImage.fulfilled,
@@ -61,11 +86,13 @@ const gameImageSlice = createSlice({
         }>,
       ) => {
         stage.imageUrl = action.payload.imageUrl;
-        stage.imageHeight = action.payload.height;
-        stage.imageWidth = action.payload.width;
+        stage.imageParams.height = action.payload.height;
+        stage.imageParams.width = action.payload.width;
       },
     );
   },
 });
+
+export const { setImageScale } = gameImageSlice.actions;
 
 export default gameImageSlice.reducer;

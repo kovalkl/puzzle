@@ -32,4 +32,10 @@ export type PuzzleType = {
   widthPx: number;
   isCorrect?: boolean;
   wordList: WordListType;
+  offsetX: number;
+};
+
+export type ImageParamsType = {
+  width: number;
+  height: number;
 };

@@ -99,7 +99,7 @@ export const Game = () => {
                   disabled
                   onMovePuzzle={() => {}}
                   imageSrc={fetchedImage || ''}
-                ></WordItem>
+                />
               )}
             </DragOverlay>,
             document.body,

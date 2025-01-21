@@ -1,6 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { getOverlayHeight } from '@/components/Game/components/GameField/getOverlayHeight';
 import { WordList } from '@/components/Game/components/WordList/WordList';
-import { useAppSelector } from '@/store/hooks';
+import { setImageScale } from '@/store/gameImageSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { PuzzleType } from '@/store/types';
 
 import styles from '@/components/Game/components/GameField/GameField.module.sass';
@@ -18,12 +21,39 @@ export const GameField = ({
   puzzles,
   puzzlesIds,
 }: GameFieldProps) => {
+  const dispatch = useAppDispatch();
+  const [imageSize, setImageSize] = useState({ imageWidth: 0, imageHeight: 0 });
+
+  const gameFieldRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (gameFieldRef.current) {
+      setImageSize({
+        imageHeight: gameFieldRef.current.offsetHeight,
+        imageWidth: gameFieldRef.current.offsetWidth,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      setImageScale({
+        width: imageSize.imageWidth,
+        height: imageSize.imageHeight,
+      }),
+    );
+  }, [dispatch, imageSize]);
+
   const currentSentenceCount = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
   );
 
-  const { isShowLevelInfo } = useAppSelector(
-    (state) => state.puzzleInteraction,
+  const isShowLevelInfo = useAppSelector(
+    (state) => state.puzzleInteraction.isShowLevelInfo,
+  );
+
+  const { height, width } = useAppSelector(
+    (state) => state.gameImage.imageScale,
   );
 
   const puzzlesOnGameFiled = puzzles.filter(
@@ -37,7 +67,11 @@ export const GameField = ({
   return (
     <div
       className={styles.gameField}
-      style={{ backgroundImage: `url(${imageSrc})` }}
+      ref={gameFieldRef}
+      style={{
+        backgroundImage: `url(${imageSrc})`,
+        backgroundSize: `${width}px ${height}px`,
+      }}
     >
       {!isShowLevelInfo &&
         getEmptyArray().map((_, index) => (
