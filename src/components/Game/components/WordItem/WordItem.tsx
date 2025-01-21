@@ -25,6 +25,10 @@ export const WordItem = ({
 
   const isImageEnabled = useAppSelector((state) => state.hint.isImageEnabled);
 
+  const { height, width } = useAppSelector(
+    (state) => state.gameImage.imageScale,
+  );
+
   const { setNodeRef, attributes, listeners, transition, isDragging } =
     useSortable({
       id: wordData.id,
@@ -37,11 +41,10 @@ export const WordItem = ({
 
   const style = {
     transition,
-    cursor: 'grab',
     width: `${wordData.widthPx}px`,
     backgroundImage: isImageEnabled ? `url(${imageSrc})` : 'none',
-    backgroundSize: '640px auto',
-    backgroundPosition: `${wordData.offsetX}px 0`,
+    backgroundSize: `${width}px ${height}px`,
+    backgroundPosition: `-${wordData.offsetX}px 0`,
   };
 
   if (isDragging) {

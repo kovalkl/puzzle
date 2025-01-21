@@ -16,7 +16,7 @@ const getPuzzleArray = (
     ...word,
     widthPx: Math.max(
       Math.floor((word.text.length / sentenceLength) * containerWidth),
-      5,
+      30,
     ),
     offsetX: 0,
   }));
@@ -32,13 +32,16 @@ const getPuzzleArray = (
   }
 
   const wordsWithWidthsAndOffsets = wordsWithWidths.map((word, index) => {
+    const offsetX =
+      index === 0
+        ? 1
+        : wordsWithWidths
+            .slice(0, index)
+            .reduce((sum, item) => sum + item.widthPx + 2, 0);
+
     return {
       ...word,
-      offsetX:
-        index === 0
-          ? 0
-          : wordsWithWidths[index - 1].offsetX +
-            wordsWithWidths[index - 1].widthPx,
+      offsetX,
     };
   });
 

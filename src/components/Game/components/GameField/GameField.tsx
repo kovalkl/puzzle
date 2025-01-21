@@ -42,7 +42,7 @@ export const GameField = ({
         height: imageSize.imageHeight,
       }),
     );
-  }, [dispatch, imageSize]);
+  }, [dispatch, imageSize.imageHeight, imageSize.imageWidth]);
 
   const currentSentenceCount = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
