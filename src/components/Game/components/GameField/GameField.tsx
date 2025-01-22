@@ -4,6 +4,8 @@ import { getOverlayHeight } from '@/components/Game/components/GameField/getOver
 import { WordList } from '@/components/Game/components/WordList/WordList';
 import { setImageScale } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setNewPuzzles } from '@/store/puzzleInteractionSlice';
+import { getSentenceData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 
 import styles from '@/components/Game/components/GameField/GameField.module.sass';
@@ -21,8 +23,12 @@ export const GameField = ({
   puzzles,
   puzzlesIds,
 }: GameFieldProps) => {
-  const dispatch = useAppDispatch();
   const [imageSize, setImageSize] = useState({ imageWidth: 0, imageHeight: 0 });
+  const sentenceText = useAppSelector(getSentenceData)?.textExample || '';
+  const sentenceCounter = useAppSelector(
+    (state) => state.gameStatus.progress.currentSentenceCount,
+  );
+  const dispatch = useAppDispatch();
 
   const gameFieldRef = useRef<HTMLDivElement>(null);
 
@@ -44,9 +50,22 @@ export const GameField = ({
     );
   }, [dispatch, imageSize.imageHeight, imageSize.imageWidth]);
 
-  const currentSentenceCount = useAppSelector(
-    (state) => state.gameStatus.progress.currentSentenceCount,
-  );
+  useEffect(() => {
+    dispatch(
+      setNewPuzzles({
+        sentence: sentenceText,
+        containerWidth: imageSize.imageWidth!,
+        containerHeight: imageSize.imageHeight!,
+        sentenceCounter,
+      }),
+    );
+  }, [
+    dispatch,
+    imageSize.imageHeight,
+    imageSize.imageWidth,
+    sentenceText,
+    sentenceCounter,
+  ]);
 
   const isShowLevelInfo = useAppSelector(
     (state) => state.puzzleInteraction.isShowLevelInfo,
@@ -76,7 +95,7 @@ export const GameField = ({
       {!isShowLevelInfo &&
         getEmptyArray().map((_, index) => (
           <div key={index} className={styles.gameField__row}>
-            {currentSentenceCount === index + 1 && (
+            {sentenceCounter === index + 1 && (
               <WordList
                 puzzlesIds={puzzlesIds}
                 type='gameField'
@@ -89,7 +108,7 @@ export const GameField = ({
       <div
         className={styles.gameField__overlay}
         style={{
-          height: `${isShowLevelInfo ? 0 : getOverlayHeight(currentSentenceCount)}%`,
+          height: `${isShowLevelInfo ? 0 : getOverlayHeight(sentenceCounter)}%`,
         }}
       ></div>
     </div>
