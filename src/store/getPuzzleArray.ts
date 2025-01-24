@@ -1,6 +1,7 @@
 import { PuzzleType, WordListType } from '@/store/types';
 
 const BORDER_WIDTH_PX = 1;
+const COUNT_SENTENCES = 10;
 
 const getPuzzleArray = (
   sentence: string,
@@ -46,7 +47,10 @@ const getPuzzleArray = (
             .slice(0, index)
             .reduce((sum, item) => sum + item.widthPx, 0);
 
-    const offsetY = sentenceCounter === 1 ? BORDER_WIDTH_PX : 0;
+    const offsetY =
+      sentenceCounter === 1
+        ? BORDER_WIDTH_PX
+        : (containerHeight / COUNT_SENTENCES) * (sentenceCounter - 1);
 
     return {
       ...word,
