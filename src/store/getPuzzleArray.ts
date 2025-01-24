@@ -1,8 +1,12 @@
 import { PuzzleType, WordListType } from '@/store/types';
 
+const BORDER_WIDTH_PX = 1;
+
 const getPuzzleArray = (
   sentence: string,
   containerWidth: number,
+  containerHeight: number,
+  sentenceCounter: number,
 ): PuzzleType[] => {
   const sentenceLength = sentence.replace(/\s/g, '').length;
 
@@ -18,7 +22,10 @@ const getPuzzleArray = (
       Math.floor((word.text.length / sentenceLength) * containerWidth),
       30,
     ),
-    offsetX: 0,
+    offset: {
+      offsetX: 0,
+      offsetY: 0,
+    },
   }));
 
   const totalWidth = wordsWithWidths.reduce(
@@ -34,14 +41,19 @@ const getPuzzleArray = (
   const wordsWithWidthsAndOffsets = wordsWithWidths.map((word, index) => {
     const offsetX =
       index === 0
-        ? 1
+        ? BORDER_WIDTH_PX
         : wordsWithWidths
             .slice(0, index)
-            .reduce((sum, item) => sum + item.widthPx + 2, 0);
+            .reduce((sum, item) => sum + item.widthPx, 0);
+
+    const offsetY = sentenceCounter === 1 ? BORDER_WIDTH_PX : 0;
 
     return {
       ...word,
-      offsetX,
+      offset: {
+        offsetX,
+        offsetY,
+      },
     };
   });
 
@@ -51,8 +63,15 @@ const getPuzzleArray = (
 export const getShuffledPuzzleArray = (
   sentenceArray: string,
   containerWidth: number,
+  containerHeight: number,
+  sentenceCounter: number,
 ): PuzzleType[] => {
-  const arrayCopy = getPuzzleArray(sentenceArray, containerWidth);
+  const arrayCopy = getPuzzleArray(
+    sentenceArray,
+    containerWidth,
+    containerHeight,
+    sentenceCounter,
+  );
 
   for (let i = arrayCopy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

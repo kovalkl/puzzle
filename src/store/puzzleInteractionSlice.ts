@@ -28,13 +28,20 @@ export const puzzleInteractionSlice = createSlice({
   reducers: {
     setNewPuzzles: (
       state,
-      action: PayloadAction<{ sentence: string; containerWidth: number }>,
+      action: PayloadAction<{
+        sentence: string;
+        containerWidth: number;
+        containerHeight: number;
+        sentenceCounter: number;
+      }>,
     ) => {
       state.currentSentenceText = action.payload.sentence;
 
       state.puzzles = getShuffledPuzzleArray(
         action.payload.sentence,
         action.payload.containerWidth,
+        action.payload.containerHeight,
+        action.payload.sentenceCounter,
       );
     },
 

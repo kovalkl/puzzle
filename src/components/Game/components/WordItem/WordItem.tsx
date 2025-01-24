@@ -44,7 +44,7 @@ export const WordItem = ({
     width: `${wordData.widthPx}px`,
     backgroundImage: isImageEnabled ? `url(${imageSrc})` : 'none',
     backgroundSize: `${width}px ${height}px`,
-    backgroundPosition: `-${wordData.offsetX}px 0`,
+    backgroundPosition: `-${wordData.offset.offsetX}px 0`,
   };
 
   if (isDragging) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { getOverlayHeight } from '@/components/Game/components/GameField/getOverlayHeight';
 import { WordList } from '@/components/Game/components/WordList/WordList';
@@ -23,7 +23,6 @@ export const GameField = ({
   puzzles,
   puzzlesIds,
 }: GameFieldProps) => {
-  const [imageSize, setImageSize] = useState({ imageWidth: 0, imageHeight: 0 });
   const sentenceText = useAppSelector(getSentenceData)?.textExample || '';
   const sentenceCounter = useAppSelector(
     (state) => state.gameStatus.progress.currentSentenceCount,
@@ -33,36 +32,43 @@ export const GameField = ({
   const gameFieldRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (gameFieldRef.current) {
-      setImageSize({
-        imageHeight: gameFieldRef.current.offsetHeight,
-        imageWidth: gameFieldRef.current.offsetWidth,
-      });
+    if (
+      gameFieldRef.current &&
+      gameFieldRef.current.offsetWidth &&
+      gameFieldRef.current.offsetHeight
+    ) {
+      dispatch(
+        setImageScale({
+          width: gameFieldRef.current.offsetWidth,
+          height: gameFieldRef.current.offsetHeight,
+        }),
+      );
     }
-  }, []);
-
-  useEffect(() => {
-    dispatch(
-      setImageScale({
-        width: imageSize.imageWidth,
-        height: imageSize.imageHeight,
-      }),
-    );
-  }, [dispatch, imageSize.imageHeight, imageSize.imageWidth]);
-
-  useEffect(() => {
-    dispatch(
-      setNewPuzzles({
-        sentence: sentenceText,
-        containerWidth: imageSize.imageWidth!,
-        containerHeight: imageSize.imageHeight!,
-        sentenceCounter,
-      }),
-    );
   }, [
     dispatch,
-    imageSize.imageHeight,
-    imageSize.imageWidth,
+    gameFieldRef.current?.offsetWidth,
+    gameFieldRef.current?.offsetHeight,
+  ]);
+
+  useEffect(() => {
+    if (
+      gameFieldRef.current &&
+      gameFieldRef.current.offsetWidth &&
+      gameFieldRef.current.offsetHeight
+    ) {
+      dispatch(
+        setNewPuzzles({
+          sentence: sentenceText,
+          containerWidth: gameFieldRef.current.offsetWidth,
+          containerHeight: gameFieldRef.current.offsetHeight,
+          sentenceCounter,
+        }),
+      );
+    }
+  }, [
+    dispatch,
+    gameFieldRef.current?.offsetWidth,
+    gameFieldRef.current?.offsetHeight,
     sentenceText,
     sentenceCounter,
   ]);
@@ -75,8 +81,9 @@ export const GameField = ({
     (state) => state.gameImage.imageScale,
   );
 
-  const puzzlesOnGameFiled = puzzles.filter(
-    (puzzle) => puzzle.wordList === 'gameField',
+  const puzzlesOnGameFiled = useMemo(
+    () => puzzles.filter((puzzle) => puzzle.wordList === 'gameField'),
+    [puzzles],
   );
 
   const getEmptyArray = () => {
@@ -89,7 +96,7 @@ export const GameField = ({
       ref={gameFieldRef}
       style={{
         backgroundImage: `url(${imageSrc})`,
-        backgroundSize: `${width}px ${height}px`,
+        backgroundSize: width && height ? `${width}px ${height}px` : 'cover',
       }}
     >
       {!isShowLevelInfo &&

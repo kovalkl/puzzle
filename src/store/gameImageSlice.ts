@@ -6,12 +6,12 @@ export type gameImageSliceType = {
   error: null | string;
   imageUrl: string | null;
   imageParams: {
-    height: number | null;
-    width: number | null;
+    height: number;
+    width: number;
   };
   imageScale: {
-    width: number | null;
-    height: number | null;
+    width: number;
+    height: number;
   };
 };
 
@@ -20,12 +20,12 @@ const initialState: gameImageSliceType = {
   error: null,
   imageUrl: null,
   imageParams: {
-    height: null,
-    width: null,
+    height: 0,
+    width: 0,
   },
   imageScale: {
-    width: null,
-    height: null,
+    width: 0,
+    height: 0,
   },
 };
 
@@ -63,15 +63,18 @@ const gameImageSlice = createSlice({
   initialState,
   reducers: {
     setImageScale(state, action: PayloadAction<ImageParamsType>) {
-      const scale = Math.max(
-        action.payload.width / state.imageParams.width!,
-        action.payload.height / state.imageParams.height!,
-      );
+      state.imageScale = action.payload;
+      if (state.imageParams.width && state.imageParams.height) {
+        const scale = Math.max(
+          action.payload.width / state.imageParams.width!,
+          action.payload.height / state.imageParams.height!,
+        );
 
-      state.imageScale = {
-        width: state.imageParams.width! * scale,
-        height: state.imageParams.height! * scale,
-      };
+        state.imageScale = {
+          width: Math.trunc(state.imageParams.width! * scale),
+          height: Math.trunc(state.imageParams.height! * scale),
+        };
+      }
     },
   },
   extraReducers: (builder) => {
