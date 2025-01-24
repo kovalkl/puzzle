@@ -49,7 +49,7 @@ const getPuzzleArray = (
 
     const offsetY =
       sentenceCounter === 1
-        ? 0
+        ? BORDER_WIDTH_PX
         : (containerHeight / COUNT_SENTENCES) * (sentenceCounter - 1) +
           BORDER_WIDTH_PX;
 
