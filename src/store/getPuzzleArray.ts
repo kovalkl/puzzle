@@ -45,12 +45,13 @@ const getPuzzleArray = (
         ? BORDER_WIDTH_PX
         : wordsWithWidths
             .slice(0, index)
-            .reduce((sum, item) => sum + item.widthPx, 0);
+            .reduce((sum, item) => sum + item.widthPx, 0) + BORDER_WIDTH_PX;
 
     const offsetY =
       sentenceCounter === 1
-        ? BORDER_WIDTH_PX
-        : (containerHeight / COUNT_SENTENCES) * (sentenceCounter - 1);
+        ? 0
+        : (containerHeight / COUNT_SENTENCES) * (sentenceCounter - 1) +
+          BORDER_WIDTH_PX;
 
     return {
       ...word,
