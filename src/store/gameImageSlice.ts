@@ -76,9 +76,6 @@ const gameImageSlice = createSlice({
         };
       }
     },
-    removeImage(state) {
-      state.imageUrl = null;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,6 +102,6 @@ const gameImageSlice = createSlice({
   },
 });
 
-export const { setImageScale, removeImage } = gameImageSlice.actions;
+export const { setImageScale } = gameImageSlice.actions;
 
 export default gameImageSlice.reducer;
