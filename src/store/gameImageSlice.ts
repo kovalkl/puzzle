@@ -81,21 +81,27 @@ const gameImageSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchImage.fulfilled,
-      (
-        stage,
-        action: PayloadAction<{
-          imageUrl: string;
-          width: number;
-          height: number;
-        }>,
-      ) => {
-        stage.imageUrl = action.payload.imageUrl;
-        stage.imageParams.height = action.payload.height;
-        stage.imageParams.width = action.payload.width;
-      },
-    );
+    builder
+      .addCase(
+        fetchImage.fulfilled,
+        (
+          stage,
+          action: PayloadAction<{
+            imageUrl: string;
+            width: number;
+            height: number;
+          }>,
+        ) => {
+          stage.imageUrl = action.payload.imageUrl;
+          stage.imageParams.height = action.payload.height;
+          stage.imageParams.width = action.payload.width;
+        },
+      )
+      .addCase(fetchImage.pending, (stage) => {
+        stage.status = 'pending';
+        stage.error = null;
+        stage.imageUrl = null;
+      });
   },
 });
 

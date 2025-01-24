@@ -2,7 +2,6 @@ import '@/components/Result/components/SentenceList/SentenceList';
 import { SentenceList } from '@/components/Result/components/SentenceList/SentenceList';
 import Button from '@/components/UI/Button/Button';
 import { setDefaultButtons } from '@/store/actionButtonSlice';
-import { removeImage } from '@/store/gameImageSlice';
 import { setNextSentence } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getLevelData } from '@/store/selectors';
@@ -20,7 +19,6 @@ export const Result = () => {
     dispatch(resetSolvedSentences());
     dispatch(setNextSentence());
     dispatch(setDefaultButtons());
-    dispatch(removeImage());
   };
 
   return (
