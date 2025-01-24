@@ -1,4 +1,5 @@
 @import '@/styles/variables.sass'
+@import '@/styles/mixins.sass'
 
 .header
   position: relative
@@ -8,6 +9,9 @@
   background-color: $dark-color
   color: $white-color
   z-index: 20
+
+  @include breakpoint(mobile)
+    padding: 4px 0
 
   &__wrapper
     display: flex
@@ -20,9 +24,17 @@
     font-size: 1.5rem
     text-transform: uppercase
     letter-spacing: 2px
+    line-height: 1.2
+
+    @include breakpoint(mobile)
+      font-size: 1.2rem
 
   &__user
     display: flex
     align-items: center
     gap: 8px
     margin-left: auto
+
+  &__userName
+    @include breakpoint(mobile)
+      display: none

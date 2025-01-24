@@ -13,7 +13,7 @@ export const Header = ({ isGreetingPage }: { isGreetingPage?: boolean }) => {
         <a className={styles.header__title}>English Puzzle</a>
         {!isGreetingPage && <StageSelector />}
         <div className={styles.header__user}>
-          <span>{userName}</span>
+          <span className={styles.header__userName}>{userName}</span>
           <Logout />
         </div>
       </div>
