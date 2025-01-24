@@ -51,7 +51,7 @@ export const Game = () => {
     }
   }, [dispatch, imageSrc]);
 
-  const fetchedImage = useAppSelector((state) => state.gameImage.imageUrl);
+  const imageUrl = useAppSelector((state) => state.gameImage.imageUrl);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -73,7 +73,7 @@ export const Game = () => {
         >
           <SortableContext items={['wordBank', 'gameField']}>
             <GameField
-              imageSrc={fetchedImage || ''}
+              imageSrc={imageUrl || ''}
               puzzles={puzzles}
               puzzlesIds={puzzlesIds}
             />
@@ -86,7 +86,7 @@ export const Game = () => {
               )}
             </div>
             <WordBank
-              imageSrc={fetchedImage || ''}
+              imageSrc={imageUrl || ''}
               puzzles={puzzles}
               puzzlesIds={puzzlesIds}
             />
@@ -98,7 +98,7 @@ export const Game = () => {
                   wordData={activePuzzle}
                   disabled
                   onMovePuzzle={() => {}}
-                  imageSrc={fetchedImage || ''}
+                  imageSrc={imageUrl || ''}
                 />
               )}
             </DragOverlay>,

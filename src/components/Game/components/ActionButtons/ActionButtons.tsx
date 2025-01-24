@@ -8,6 +8,7 @@ import {
   setSkipButtonToResult,
   setSkipButtonToSkip,
 } from '@/store/actionButtonSlice';
+import { removeImage } from '@/store/gameImageSlice';
 import { setNextSentence } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -71,6 +72,7 @@ export const ActionButtons = () => {
         dispatch(setIsShowLevelInfo(false));
         dispatch(setSkipButtonToSkip());
         dispatch(resetSolvedSentences());
+        dispatch(removeImage());
       }
     }
   };
