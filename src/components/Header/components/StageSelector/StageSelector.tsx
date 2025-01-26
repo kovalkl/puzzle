@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Select } from '@/components/Header/components/Select/Select';
+import { SelectorType } from '@/components/Header/components/types';
 import { setDefaultButtons } from '@/store/actionButtonSlice';
 import { fetchRounds } from '@/store/gameDataSlice';
 import {
@@ -15,6 +16,10 @@ import {
 } from '@/store/puzzleInteractionSlice';
 
 export const StageSelector = () => {
+  const [currentSelector, setCurrentSelector] = useState<SelectorType | null>(
+    null,
+  );
+
   const {
     levelInfo: { countRounds },
     progress: { currentRound, currentLevel },
@@ -45,13 +50,17 @@ export const StageSelector = () => {
         value={currentRound.toString()}
         setValue={(round: string) => dispatch(setCurrentRound(parseInt(round)))}
         length={countRounds}
-        text='Round'
+        title='round'
+        currentSelector={currentSelector}
+        setCurrentSelector={setCurrentSelector}
       />
       <Select
         value={currentLevel.toString()}
         setValue={(level: string) => dispatch(setCurrentLevel(parseInt(level)))}
         length={rounds[currentRound]?.roundsCount}
-        text='Level'
+        title='level'
+        currentSelector={currentSelector}
+        setCurrentSelector={setCurrentSelector}
       />
     </>
   );
