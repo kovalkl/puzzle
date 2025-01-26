@@ -1,28 +1,12 @@
 import { useEffect } from 'react';
 
+import {
+  handleClickCheckButton,
+  handleClickSkipButton,
+  handleCorrectSentence,
+} from '@/components/Game/components/ActionButtons/actionButtonThunks';
 import Button from '@/components/UI/Button/Button';
-import {
-  setCheckButtonToCheck,
-  setCheckButtonToContinue,
-  setSkipButtonDisabled,
-  setSkipButtonToResult,
-  setSkipButtonToSkip,
-} from '@/store/actionButtonSlice';
-import { setNextSentence } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {
-  checkCorrectness,
-  setCorrectPuzzles,
-  setGameFieldDisabled,
-  setIsSentenceCorrect,
-  setIsShowLevelInfo,
-  setIsShowResult,
-} from '@/store/puzzleInteractionSlice';
-import {
-  addSolvedSentence,
-  addUnsolvedSentence,
-  resetSolvedSentences,
-} from '@/store/solvedSentenceSlice';
 
 import styles from '@/components/Game/components/ActionButtons/ActionButtons.module.sass';
 
@@ -44,54 +28,33 @@ export const ActionButtons = () => {
 
   useEffect(() => {
     if (isSentenceCorrect) {
-      dispatch(setCheckButtonToContinue());
-      dispatch(setSkipButtonDisabled(true));
-      dispatch(setGameFieldDisabled(true));
-      dispatch(addSolvedSentence(currentSentenceText));
-      if (currentSentenceCount === 10) {
-        dispatch(setIsShowLevelInfo(true));
-        dispatch(setSkipButtonToResult());
-        dispatch(setSkipButtonDisabled(false));
-      }
+      dispatch(
+        handleCorrectSentence({
+          currentSentenceText,
+          currentSentenceCount,
+        }),
+      );
     }
   }, [isSentenceCorrect, dispatch, currentSentenceCount, currentSentenceText]);
 
   const onClickCheckButton = () => {
-    if (checkButton.text === 'Check') {
-      dispatch(checkCorrectness(isImageEnabled));
-    }
-
-    if (checkButton.text === 'Continue') {
-      dispatch(setIsSentenceCorrect(false));
-      dispatch(setNextSentence());
-      dispatch(setSkipButtonDisabled(false));
-      dispatch(setCheckButtonToCheck());
-      dispatch(setGameFieldDisabled(false));
-      if (currentSentenceCount === 10) {
-        dispatch(setIsShowLevelInfo(false));
-        dispatch(setSkipButtonToSkip());
-        dispatch(resetSolvedSentences());
-      }
-    }
+    dispatch(
+      handleClickCheckButton({
+        isImageEnabled,
+        currentSentenceCount,
+        buttonType: checkButton.text,
+      }),
+    );
   };
 
   const onClickSkipButton = () => {
-    if (skipButton.text === "I don't know") {
-      dispatch(setCorrectPuzzles());
-      dispatch(setSkipButtonDisabled(true));
-      dispatch(setCheckButtonToContinue());
-      dispatch(setGameFieldDisabled(true));
-      dispatch(addUnsolvedSentence(currentSentenceText));
-      if (currentSentenceCount === 10) {
-        dispatch(setIsShowLevelInfo(true));
-        dispatch(setSkipButtonToResult());
-        dispatch(setSkipButtonDisabled(false));
-      }
-    }
-
-    if (skipButton.text === 'Result') {
-      dispatch(setIsShowResult(true));
-    }
+    dispatch(
+      handleClickSkipButton({
+        buttonType: skipButton.text,
+        currentSentenceText,
+        currentSentenceCount,
+      }),
+    );
   };
 
   return (
