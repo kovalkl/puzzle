@@ -1,11 +1,9 @@
 import '@/components/Result/components/SentenceList/SentenceList';
 import { SentenceList } from '@/components/Result/components/SentenceList/SentenceList';
+import { resetGameProgress } from '@/components/Result/resetGameProgress';
 import Button from '@/components/UI/Button/Button';
-import { setDefaultButtons } from '@/store/actionButtonSlice';
-import { setNextSentence } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getLevelData } from '@/store/selectors';
-import { resetSolvedSentences } from '@/store/solvedSentenceSlice';
 
 import styles from '@/components/Result/Result.module.sass';
 
@@ -16,9 +14,7 @@ export const Result = () => {
   const dispatch = useAppDispatch();
 
   const onContinue = () => {
-    dispatch(resetSolvedSentences());
-    dispatch(setNextSentence());
-    dispatch(setDefaultButtons());
+    dispatch(resetGameProgress());
   };
 
   return (
@@ -29,8 +25,8 @@ export const Result = () => {
           className={styles.result__levelName}
         >{`${author} - ${name} (${year})`}</span>
       </div>
-      {Boolean(solved.length) && <SentenceList title='I know' list={solved} />}
-      {Boolean(unsolved.length) && (
+      {solved.length > 0 && <SentenceList title='I know' list={solved} />}
+      {unsolved.length > 0 && (
         <SentenceList title="I don't know" list={unsolved} />
       )}
       <Button onClick={onContinue}>Continue</Button>
