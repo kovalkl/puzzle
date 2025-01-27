@@ -14,10 +14,6 @@ type GameStatusSliceType = {
     countLevels: number;
   };
   progress: ProgressType;
-  solvedSentences: {
-    solved: string[];
-    unsolved: string[];
-  };
 };
 
 const initialState: GameStatusSliceType = {
@@ -29,10 +25,6 @@ const initialState: GameStatusSliceType = {
     currentRound: 1,
     currentLevel: 1,
     currentSentenceCount: 1,
-  },
-  solvedSentences: {
-    solved: [],
-    unsolved: [],
   },
 };
 
