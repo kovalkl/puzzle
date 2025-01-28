@@ -1,14 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Select } from '@/components/Header/components/Select/Select';
-import { SelectorType } from '@/components/Header/components/types';
+import { GroupSelect } from '@/components/Header/components/GroupSelect/GroupSelect';
 import { setDefaultButtons } from '@/store/actionButtonSlice';
 import { fetchRounds } from '@/store/gameDataSlice';
-import {
-  setCountLevels,
-  setCurrentLevel,
-  setCurrentRound,
-} from '@/store/gameStatusSlice';
+import { setCountLevels } from '@/store/gameStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   setIsShowLevelInfo,
@@ -16,10 +11,6 @@ import {
 } from '@/store/puzzleInteractionSlice';
 
 export const StageSelector = () => {
-  const [currentSelector, setCurrentSelector] = useState<SelectorType | null>(
-    null,
-  );
-
   const {
     levelInfo: { countRounds },
     progress: { currentRound, currentLevel },
@@ -44,24 +35,23 @@ export const StageSelector = () => {
     dispatch(setDefaultButtons());
   }, [currentRound, currentLevel, dispatch]);
 
+  const completedRounds = useAppSelector(
+    (stage) => stage.userProgress.userProgress.completedRounds,
+  );
+
+  const completedLevels = useAppSelector(
+    (stage) =>
+      stage.userProgress.userProgress?.[currentRound]?.completedLevels || [],
+  );
+
   return (
-    <>
-      <Select
-        value={currentRound.toString()}
-        setValue={(round: string) => dispatch(setCurrentRound(parseInt(round)))}
-        length={countRounds}
-        title='round'
-        currentSelector={currentSelector}
-        setCurrentSelector={setCurrentSelector}
-      />
-      <Select
-        value={currentLevel.toString()}
-        setValue={(level: string) => dispatch(setCurrentLevel(parseInt(level)))}
-        length={rounds[currentRound]?.roundsCount}
-        title='level'
-        currentSelector={currentSelector}
-        setCurrentSelector={setCurrentSelector}
-      />
-    </>
+    <GroupSelect
+      countRounds={countRounds}
+      currentRound={currentRound}
+      currentLevel={currentLevel}
+      completedLevels={completedLevels}
+      completedRounds={completedRounds}
+      rounds={rounds}
+    />
   );
 };
