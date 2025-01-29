@@ -26,16 +26,29 @@ export const ActionButtons = () => {
   );
   const dispatch = useAppDispatch();
 
+  const { currentRound, currentLevel } = useAppSelector(
+    (state) => state.gameStatus.progress,
+  );
+
   useEffect(() => {
     if (isSentenceCorrect) {
       dispatch(
         handleCorrectSentence({
           currentSentenceText,
           currentSentenceCount,
+          currentRound,
+          currentLevel,
         }),
       );
     }
-  }, [isSentenceCorrect, dispatch, currentSentenceCount, currentSentenceText]);
+  }, [
+    isSentenceCorrect,
+    dispatch,
+    currentSentenceCount,
+    currentSentenceText,
+    currentRound,
+    currentLevel,
+  ]);
 
   const onClickCheckButton = () => {
     dispatch(
@@ -53,6 +66,8 @@ export const ActionButtons = () => {
         buttonType: skipButton.text,
         currentSentenceText,
         currentSentenceCount,
+        currentRound,
+        currentLevel,
       }),
     );
   };

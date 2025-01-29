@@ -9,6 +9,7 @@ import {
   setIsShowLevelInfo,
   setIsShowResult,
 } from '@/store/puzzleInteractionSlice';
+import { setLevelsCount } from '@/store/userProgressSlice';
 
 export const StageSelector = () => {
   const {
@@ -26,8 +27,14 @@ export const StageSelector = () => {
   useEffect(() => {
     if (rounds[currentRound]) {
       dispatch(setCountLevels(rounds[currentRound].roundsCount));
+      dispatch(
+        setLevelsCount({
+          round: currentRound,
+          roundsCount: rounds[currentRound].roundsCount,
+        }),
+      );
     }
-  }, [currentRound, dispatch, rounds]);
+  }, [currentRound, dispatch, rounds, countRounds]);
 
   useEffect(() => {
     dispatch(setIsShowResult(false));

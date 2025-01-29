@@ -20,6 +20,7 @@ import {
   addUnsolvedSentence,
   resetSolvedSentences,
 } from '@/store/solvedSentenceSlice';
+import { addLevel } from '@/store/userProgressSlice';
 
 type handleClickCheckButtonProps = {
   buttonType: 'Check' | 'Continue';
@@ -31,11 +32,15 @@ type handleClickSkipButtonProps = {
   buttonType: "I don't know" | 'Result';
   currentSentenceText: string;
   currentSentenceCount: number;
+  currentRound: number;
+  currentLevel: number;
 };
 
 type handleCorrectSentenceProps = {
   currentSentenceText: string;
   currentSentenceCount: number;
+  currentRound: number;
+  currentLevel: number;
 };
 
 export const handleClickCheckButton =
@@ -68,6 +73,8 @@ export const handleClickSkipButton =
     buttonType,
     currentSentenceText,
     currentSentenceCount,
+    currentRound,
+    currentLevel,
   }: handleClickSkipButtonProps) =>
   (dispatch: AppDispatch) => {
     if (buttonType === "I don't know") {
@@ -80,6 +87,7 @@ export const handleClickSkipButton =
         dispatch(setIsShowLevelInfo(true));
         dispatch(setSkipButtonToResult());
         dispatch(setSkipButtonDisabled(false));
+        dispatch(addLevel({ round: currentRound, level: currentLevel }));
       }
     }
 
@@ -89,7 +97,12 @@ export const handleClickSkipButton =
   };
 
 export const handleCorrectSentence =
-  ({ currentSentenceCount, currentSentenceText }: handleCorrectSentenceProps) =>
+  ({
+    currentSentenceCount,
+    currentSentenceText,
+    currentRound,
+    currentLevel,
+  }: handleCorrectSentenceProps) =>
   (dispatch: AppDispatch) => {
     dispatch(setCheckButtonToContinue());
     dispatch(setSkipButtonDisabled(true));
@@ -99,5 +112,6 @@ export const handleCorrectSentence =
       dispatch(setIsShowLevelInfo(true));
       dispatch(setSkipButtonToResult());
       dispatch(setSkipButtonDisabled(false));
+      dispatch(addLevel({ round: currentRound, level: currentLevel }));
     }
   };

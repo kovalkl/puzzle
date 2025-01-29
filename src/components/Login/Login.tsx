@@ -23,7 +23,7 @@ export const Login = () => {
   } = useForm({ resolver: yupResolver(loginSchema), mode: 'onChange' });
 
   const onSubmit = (data: UserType) => {
-    dispatch(addUser(`${data.firstName} ${data.surname}`));
+    dispatch(addUser({ firstName: data.firstName, surname: data.surname }));
     navigate(`/${paths.GREETING}`);
   };
 
