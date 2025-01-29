@@ -7,21 +7,50 @@ import hintReducer from '@/store/hintSlice';
 import puzzleInteractionReducer from '@/store/puzzleInteractionSlice';
 import solvedSentenceReducer from '@/store/solvedSentenceSlice';
 import userProgressReducer from '@/store/userProgressSlice';
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const rootReducer = combineReducers({
+  userProgress: userProgressReducer,
+  gameData: gameDataReducer,
+  gameStatus: gameStatusReducer,
+  gameImage: gameImageReducer,
+  gameAudio: gameAudioReducer,
+  hint: hintReducer,
+  actionButton: actionButtonReducer,
+  puzzleInteraction: puzzleInteractionReducer,
+  solvedSentence: solvedSentenceReducer,
+});
+
+const persistConfig = {
+  key: 'puzzle',
+  storage,
+  whitelist: ['userProgress'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: {
-    userProgress: userProgressReducer,
-    gameData: gameDataReducer,
-    gameStatus: gameStatusReducer,
-    gameImage: gameImageReducer,
-    gameAudio: gameAudioReducer,
-    hint: hintReducer,
-    actionButton: actionButtonReducer,
-    puzzleInteraction: puzzleInteractionReducer,
-    solvedSentence: solvedSentenceReducer,
-  },
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export const persistor = persistStore(store);
 
 export default store;
 
