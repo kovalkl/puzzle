@@ -1,21 +1,20 @@
+import { ProgressType } from '@/store/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type UserProgressType = {
-  userName: string;
-  userProgress: {
-    [key: number]: {
-      levelsCount: number;
-      completedLevels: number[];
-    };
-    completedRounds: number[];
+  levelsCount: {
+    [key: number]: number;
   };
+  users: {
+    [key: string]: ProgressType;
+  };
+  currentUser: string | null;
 };
 
 const initialState: UserProgressType = {
-  userName: '',
-  userProgress: {
-    completedRounds: [],
-  },
+  levelsCount: {},
+  users: {},
+  currentUser: null,
 };
 
 const userProgress = createSlice({
@@ -26,35 +25,44 @@ const userProgress = createSlice({
       state,
       action: PayloadAction<{ firstName: string; surname: string }>,
     ) => {
-      state.userName = `${action.payload.firstName} ${action.payload.surname}`;
+      const userFullName = `${action.payload.firstName} ${action.payload.surname}`;
+
+      if (!state.users[userFullName]) {
+        state.users[userFullName] = {
+          completedRounds: [],
+        };
+      }
+
+      state.currentUser = userFullName;
     },
 
     addLevel: (
       state,
       action: PayloadAction<{ round: number; level: number }>,
     ) => {
-      if (!state.userProgress[action.payload.round]) {
-        state.userProgress[action.payload.round] = {
-          levelsCount: 0,
-          completedLevels: [],
-        };
-      }
-
-      if (
-        !state.userProgress[action.payload.round].completedLevels.includes(
-          action.payload.level,
-        )
-      ) {
-        state.userProgress[action.payload.round].completedLevels.push(
-          action.payload.level,
+      if (!state.currentUser) {
+        console.error(
+          'Error: User state is undefined for currentUser',
+          state.currentUser,
         );
+        return;
       }
 
+      if (!state.users[state.currentUser][action.payload.round]) {
+        state.users[state.currentUser][action.payload.round] = [];
+      }
+
+      state.users[state.currentUser][action.payload.round].push(
+        action.payload.level,
+      );
+
       if (
-        state.userProgress[action.payload.round].levelsCount ===
-        state.userProgress[action.payload.round].completedLevels.length
+        state.users[state.currentUser][action.payload.round].length ===
+        state.levelsCount[action.payload.round]
       ) {
-        state.userProgress.completedRounds.push(action.payload.round);
+        state.users[state.currentUser].completedRounds.push(
+          action.payload.round,
+        );
       }
     },
 
@@ -62,17 +70,18 @@ const userProgress = createSlice({
       state,
       action: PayloadAction<{ round: number; roundsCount: number }>,
     ) => {
-      if (!state.userProgress[action.payload.round]) {
-        state.userProgress[action.payload.round] = {
-          levelsCount: 0,
-          completedLevels: [],
-        };
+      if (!state.levelsCount) {
+        state.levelsCount = {};
       }
-      state.userProgress[action.payload.round].levelsCount =
-        action.payload.roundsCount;
+      state.levelsCount[action.payload.round] = action.payload.roundsCount;
+    },
+
+    logoutUser: (state) => {
+      state.currentUser = null;
     },
   },
 });
 
-export const { addUser, addLevel, setLevelsCount } = userProgress.actions;
+export const { addUser, addLevel, setLevelsCount, logoutUser } =
+  userProgress.actions;
 export default userProgress.reducer;

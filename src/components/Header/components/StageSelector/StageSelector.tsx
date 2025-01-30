@@ -43,12 +43,15 @@ export const StageSelector = () => {
   }, [currentRound, currentLevel, dispatch]);
 
   const completedRounds = useAppSelector(
-    (stage) => stage.userProgress.userProgress.completedRounds,
+    (stage) =>
+      stage.userProgress.users[stage.userProgress.currentUser!]
+        .completedRounds || [],
   );
 
   const completedLevels = useAppSelector(
     (stage) =>
-      stage.userProgress.userProgress?.[currentRound]?.completedLevels || [],
+      stage.userProgress.users[stage.userProgress.currentUser!][currentRound] ||
+      [],
   );
 
   return (

@@ -42,3 +42,8 @@ export type ImageParamsType = {
   width: number;
   height: number;
 };
+
+export type ProgressType = {
+  [key: number]: number[];
+  completedRounds: number[];
+};

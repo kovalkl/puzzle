@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout/Layout';
+import { PrivateRoute } from '@/components/PrivateRoute/PrivateRoute';
 import { paths } from '@/constants/paths';
 import { GreetingPage } from '@/views/GreetingPage/GreetingPage';
 import { LoginPage } from '@/views/LoginPage/LoginPage';
@@ -8,7 +9,11 @@ import { LoginPage } from '@/views/LoginPage/LoginPage';
 const router = createBrowserRouter([
   {
     path: paths.ROOT,
-    element: <Layout />,
+    element: (
+      <PrivateRoute>
+        <Layout />
+      </PrivateRoute>
+    ),
   },
   {
     path: `/${paths.LOGIN}`,
@@ -16,7 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: `/${paths.GREETING}`,
-    element: <GreetingPage />,
+    element: (
+      <PrivateRoute>
+        <GreetingPage />
+      </PrivateRoute>
+    ),
   },
 ]);
 
