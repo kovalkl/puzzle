@@ -16,8 +16,7 @@ export const StageSelector = () => {
     levelInfo: { countRounds },
     progress: { currentRound, currentLevel },
   } = useAppSelector((state) => state.gameStatus);
-  const { rounds } = useAppSelector((state) => state.gameData);
-
+  const rounds = useAppSelector((state) => state.gameData.rounds);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
