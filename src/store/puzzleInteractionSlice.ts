@@ -78,7 +78,7 @@ export const puzzleInteractionSlice = createSlice({
 
     checkCorrectness: (state, action: PayloadAction<boolean>) => {
       state.isShowCorrectness = true;
-      if (action) {
+      if (action.payload) {
         state.puzzles = state.puzzles.map((puzzle, index) => {
           return {
             ...puzzle,
