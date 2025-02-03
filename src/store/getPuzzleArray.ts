@@ -9,6 +9,9 @@ const getPuzzleArray = (
   containerHeight: number,
   sentenceCounter: number,
 ): PuzzleType[] => {
+  if (!sentence.length) {
+    return [];
+  }
   const sentenceLength = sentence.replace(/\s/g, '').length;
 
   const shuffledArray = sentence.split(' ').map((text, index) => ({
@@ -62,9 +65,7 @@ const getPuzzleArray = (
     };
   });
 
-  return wordsWithWidthsAndOffsets.every((word) => word.text !== '')
-    ? wordsWithWidthsAndOffsets
-    : [];
+  return wordsWithWidthsAndOffsets;
 };
 
 export const getShuffledPuzzleArray = (
