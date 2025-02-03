@@ -35,10 +35,12 @@ export const Greeting = () => {
           <Backdrop />
           <div className={`${styles.greeting__wrapper} container`}>
             <p className={styles.greeting__title}>Hello, {currentUser}!</p>
-            <p>
-              Click on words, collect phrases. Select tooltips in the menu.
-              Words can be drag and drop
-            </p>
+            <ul>
+              <li>Click on words to form correct phrases</li>
+              <li>Use hints in the menu if needed</li>
+              <li>Words can be dragged and dropped</li>
+            </ul>
+            <p>Ready to start?</p>
             <Button onClick={() => navigate('/')}>Start</Button>
           </div>
         </>
