@@ -62,7 +62,9 @@ const getPuzzleArray = (
     };
   });
 
-  return wordsWithWidthsAndOffsets;
+  return wordsWithWidthsAndOffsets.every((word) => word.text !== '')
+    ? wordsWithWidthsAndOffsets
+    : [];
 };
 
 export const getShuffledPuzzleArray = (

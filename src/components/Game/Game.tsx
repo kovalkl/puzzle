@@ -34,10 +34,9 @@ import styles from '@/components/Game/Game.module.sass';
 export const Game = () => {
   const dispatch = useAppDispatch();
   const imageSrc = useAppSelector(getLevelData)?.imageSrc;
-  const isShowLevelInfo = useAppSelector(
-    (state) => state.puzzleInteraction.isShowLevelInfo,
+  const { puzzles, isShowLevelInfo } = useAppSelector(
+    (state) => state.puzzleInteraction,
   );
-  const { puzzles } = useAppSelector((state) => state.puzzleInteraction);
 
   const puzzlesIds = useMemo(() => {
     return puzzles.map((puzzle) => puzzle.id);
