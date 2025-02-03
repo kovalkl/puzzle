@@ -1,5 +1,6 @@
 import { RootState } from '@/store';
 import { LevelDataType, WordsType } from '@/store/types';
+import { createSelector } from 'reselect';
 
 const getCurrentLevelData = (state: RootState) => {
   const { currentRound, currentLevel } = state.gameStatus.progress;
@@ -20,3 +21,19 @@ export const getLevelData = (state: RootState): LevelDataType | null => {
   const currentLevelData = getCurrentLevelData(state);
   return currentLevelData?.levelData || null;
 };
+
+export const selectCurrentUser = (state: RootState) =>
+  state.userProgress.currentUser;
+export const selectUsers = (state: RootState) => state.userProgress.users;
+
+export const selectCompletedRounds = createSelector(
+  [selectUsers, selectCurrentUser],
+  (users, currentUser) =>
+    currentUser ? users[currentUser]?.completedRounds || [] : [],
+);
+
+export const selectCompletedLevels = createSelector(
+  [selectUsers, selectCurrentUser, (_, currentRound: number) => currentRound],
+  (users, currentUser, currentRound) =>
+    currentUser ? users[currentUser]?.[currentRound] || [] : [],
+);

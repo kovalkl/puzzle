@@ -9,6 +9,10 @@ import {
   setIsShowLevelInfo,
   setIsShowResult,
 } from '@/store/puzzleInteractionSlice';
+import {
+  selectCompletedLevels,
+  selectCompletedRounds,
+} from '@/store/selectors';
 import { setLevelsCount } from '@/store/userProgressSlice';
 
 export const StageSelector = () => {
@@ -41,16 +45,9 @@ export const StageSelector = () => {
     dispatch(setDefaultButtons());
   }, [currentRound, currentLevel, dispatch]);
 
-  const completedRounds = useAppSelector(
-    (stage) =>
-      stage.userProgress.users[stage.userProgress.currentUser!]
-        .completedRounds || [],
-  );
-
-  const completedLevels = useAppSelector(
-    (stage) =>
-      stage.userProgress.users[stage.userProgress.currentUser!][currentRound] ||
-      [],
+  const completedRounds = useAppSelector(selectCompletedRounds);
+  const completedLevels = useAppSelector((state) =>
+    selectCompletedLevels(state, currentRound),
   );
 
   return (
