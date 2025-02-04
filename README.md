@@ -1,8 +1,12 @@
-# Puzzle Game
+# Puzzle Game 🎮🧩
 
 An interactive puzzle game where you need to form sentences while uncovering an image as you progress through the levels.
 
-## Features
+## 🚀 Deploy Version
+
+You can play the game live at 👉 [deployed version link](https://engpuzzle.netlify.app/) 👈
+
+## Features ✨
 
 - Drag-and-drop words to form sentences (@dnd-kit)
 - Hints: audio, background image, translation
@@ -11,7 +15,7 @@ An interactive puzzle game where you need to form sentences while uncovering an 
 - Multiple levels and rounds
 - Displaying the rating at the end of the game
 
-## Running the Project
+## Running the Project 🛠️
 
 1. Install dependencies:
 
@@ -30,7 +34,7 @@ An interactive puzzle game where you need to form sentences while uncovering an 
     ```bash
     npm run lint
 
-## Technologies Used
+## Technologies Used ⚙️
 ### Frontend
 - React (with React Router)
 - TypeScript
