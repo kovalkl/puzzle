@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# Puzzle Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive puzzle game where you need to form sentences while uncovering an image as you progress through the levels.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Drag-and-drop words to form sentences (@dnd-kit)
+- Hints: audio, background image, translation
+- Saving progress in LocalStorage (redux-persist)
+- Login validation (react-hook-form + yup)
+- Multiple levels and rounds
+- Displaying the rating at the end of the game
 
-## Expanding the ESLint configuration
+## Running the Project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Install dependencies:
 
-- Configure the top-level `parserOptions` property like this:
+   ```bash
+   npm install
+2. Run in development mode:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+    ```bash
+    npm run dev
+3. Build the project:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+    ```bash
+    npm run build
+4. Lint the code:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+    ```bash
+    npm run lint
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Technologies Used
+### Frontend
+- React (with React Router)
+- TypeScript
+- SCSS (for styling)
+### State Management
+- Redux Toolkit, reselect (for state management)
+- Redux-persist (for saving state in LocalStorage)
+### Form Handling & Validation
+- react-hook-form, yup (for form handling and validation)
+### Build & Linting
+- Vite (for building and development)
+- ESLint, Prettier (for code quality checks)

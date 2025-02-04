@@ -7,8 +7,10 @@ type SelectProps = {
   length: number;
   completedOptions?: number[];
   value: number;
+  // eslint-disable-next-line no-unused-vars
   setValue: (value: number) => void;
   currentSelector: SelectorType | null;
+  // eslint-disable-next-line no-unused-vars
   setCurrentSelector: (value: SelectorType | null) => void;
 };
 
