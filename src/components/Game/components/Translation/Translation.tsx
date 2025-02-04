@@ -1,20 +1,13 @@
-import { useEffect } from 'react';
+import { useAppSelector } from '@/store/hooks';
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setIsTranslationLoaded } from '@/store/loadingSlice';
-import { getSentenceData } from '@/store/selectors';
+type TranslationProps = {
+  translation: string;
+};
 
-export const Translation = () => {
+export const Translation = ({ translation }: TranslationProps) => {
   const isTranslationEnabled = useAppSelector(
     (state) => state.hint.isTranslationEnabled,
   );
-  const translation =
-    useAppSelector(getSentenceData)?.textExampleTranslate || '';
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setIsTranslationLoaded(translation !== ''));
-  }, [dispatch, translation]);
 
   return <div>{isTranslationEnabled && translation}</div>;
 };

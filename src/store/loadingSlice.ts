@@ -4,7 +4,6 @@ type LoadingType = {
   loadStatus: {
     translation: boolean;
     image: boolean;
-    puzzles: boolean;
   };
   isLoaded: boolean;
 };
@@ -13,7 +12,6 @@ const initialState: LoadingType = {
   loadStatus: {
     translation: false,
     image: false,
-    puzzles: false,
   },
   isLoaded: false,
 };
@@ -35,15 +33,10 @@ export const loadingSlice = createSlice({
       state.loadStatus.image = action.payload;
       updateIsLoaded(state);
     },
-
-    setIsPuzzlesLoaded: (state, action: PayloadAction<boolean>) => {
-      state.loadStatus.puzzles = action.payload;
-      updateIsLoaded(state);
-    },
   },
 });
 
-export const { setIsTranslationLoaded, setIsImageLoaded, setIsPuzzlesLoaded } =
+export const { setIsTranslationLoaded, setIsImageLoaded } =
   loadingSlice.actions;
 
 export default loadingSlice.reducer;

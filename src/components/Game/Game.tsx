@@ -7,6 +7,7 @@ import { HintsBlock } from '@/components/Game/components/HintsBlock/HintsBlock';
 import { TranslationBlock } from '@/components/Game/components/TranslationBlock/TranslationBlock';
 import { fetchImage } from '@/store/gameImageSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setIsImageLoaded } from '@/store/loadingSlice';
 import { getLevelData } from '@/store/selectors';
 
 import styles from '@/components/Game/Game.module.sass';
@@ -28,16 +29,25 @@ export const Game = () => {
     }
   }, [dispatch, imageSrc]);
 
-  const imageUrl = useAppSelector((state) => state.gameImage.imageUrl) || '';
+  const { imageUrl, status } = useAppSelector((state) => state.gameImage);
+
+  useEffect(() => {
+    if (imageUrl !== '') {
+      dispatch(setIsImageLoaded(status === 'fulfilled'));
+    }
+  }, [status, imageUrl, dispatch]);
+
+  const isLoaded = useAppSelector((state) => state.loading.isLoaded);
 
   return (
     <div className={styles.game}>
       <div className={styles.game__wrapper}>
         <HintsBlock />
         <DragAndDropProvider
-          imageUrl={imageUrl}
+          imageUrl={imageUrl || ''}
           puzzles={puzzles}
           puzzlesIds={puzzlesIds}
+          isLoaded={isLoaded}
         >
           <div className={styles.game__translation}>
             {!isShowLevelInfo && <TranslationBlock />}

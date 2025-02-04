@@ -29,12 +29,14 @@ type DragAndDropProviderProps = {
   imageUrl: string;
   puzzles: PuzzleType[];
   puzzlesIds: number[];
+  isLoaded: boolean;
 };
 
 export const DragAndDropProvider = ({
   imageUrl,
   puzzles,
   puzzlesIds,
+  isLoaded,
   children,
 }: DragAndDropProviderProps) => {
   const dispatch = useAppDispatch();
@@ -66,6 +68,7 @@ export const DragAndDropProvider = ({
           imageSrc={imageUrl || ''}
           puzzles={puzzles}
           puzzlesIds={puzzlesIds}
+          isLoaded={isLoaded}
         />
       </SortableContext>
       {createPortal(
