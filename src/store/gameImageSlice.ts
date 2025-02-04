@@ -1,8 +1,8 @@
-import { ImageParamsType } from '@/store/types';
+import { ImageParamsType, StatusType } from '@/store/types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export type gameImageSliceType = {
-  status: null | 'pending' | 'fulfilled' | 'rejected';
+  status: StatusType;
   error: null | string;
   imageUrl: string | null;
   imageParams: {
@@ -92,6 +92,8 @@ const gameImageSlice = createSlice({
           stage.imageUrl = action.payload.imageUrl;
           stage.imageParams.height = action.payload.height;
           stage.imageParams.width = action.payload.width;
+          stage.status = 'fulfilled';
+          stage.error = null;
         },
       )
       .addCase(fetchImage.pending, (stage) => {

@@ -1,4 +1,4 @@
-import { RoundType } from '@/store/types';
+import { RoundType, StatusType } from '@/store/types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchRounds = createAsyncThunk(
@@ -15,7 +15,7 @@ export const fetchRounds = createAsyncThunk(
 );
 
 export type RoundSliceType = {
-  status: null | 'pending' | 'fulfilled' | 'rejected';
+  status: StatusType;
   error: null | string;
   rounds: {
     [key: number]: RoundType;

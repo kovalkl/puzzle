@@ -47,3 +47,5 @@ export type ProgressType = {
   [key: number]: number[];
   completedRounds: number[];
 };
+
+export type StatusType = 'pending' | 'fulfilled' | 'rejected' | null;

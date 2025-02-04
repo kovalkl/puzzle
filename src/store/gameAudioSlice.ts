@@ -1,7 +1,8 @@
+import { StatusType } from '@/store/types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export type gameAudioSliceType = {
-  status: null | 'pending' | 'fulfilled' | 'rejected';
+  status: StatusType;
   error: null | string;
   audioUrl: string | null;
 };
