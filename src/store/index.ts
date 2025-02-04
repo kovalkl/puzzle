@@ -4,6 +4,7 @@ import gameDataReducer from '@/store/gameDataSlice';
 import gameImageReducer from '@/store/gameImageSlice';
 import gameStatusReducer from '@/store/gameStatusSlice';
 import hintReducer from '@/store/hintSlice';
+import loadingReducer from '@/store/loadingSlice';
 import puzzleInteractionReducer from '@/store/puzzleInteractionSlice';
 import solvedSentenceReducer from '@/store/solvedSentenceSlice';
 import userProgressReducer from '@/store/userProgressSlice';
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   actionButton: actionButtonReducer,
   puzzleInteraction: puzzleInteractionReducer,
   solvedSentence: solvedSentenceReducer,
+  loading: loadingReducer,
 });
 
 const persistConfig = {

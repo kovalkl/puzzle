@@ -1,18 +1,15 @@
 import { useState } from 'react';
-import { useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import { GameField } from '@/components/Game/components/GameField/GameField';
 import { WordBank } from '@/components/Game/components/WordBank/WordBank';
 import { WordItem } from '@/components/Game/components/WordItem/WordItem';
-import { fetchImage } from '@/store/gameImageSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 import {
   movePuzzleToGameField,
   movePuzzleToWordBank,
   setPuzzles,
 } from '@/store/puzzleInteractionSlice';
-import { getLevelData } from '@/store/selectors';
 import { PuzzleType } from '@/store/types';
 import {
   DndContext,
@@ -29,18 +26,19 @@ import { arrayMove } from '@dnd-kit/sortable';
 
 type DragAndDropProviderProps = {
   children: JSX.Element;
+  imageUrl: string;
+  puzzles: PuzzleType[];
+  puzzlesIds: number[];
 };
 
-export const DragAndDropProvider = ({ children }: DragAndDropProviderProps) => {
+export const DragAndDropProvider = ({
+  imageUrl,
+  puzzles,
+  puzzlesIds,
+  children,
+}: DragAndDropProviderProps) => {
   const dispatch = useAppDispatch();
   const [activePuzzle, setActivePuzzle] = useState<PuzzleType | null>(null);
-
-  const puzzles = useAppSelector((state) => state.puzzleInteraction.puzzles);
-
-  const puzzlesIds = useMemo(
-    () => (puzzles.length ? puzzles.map((p) => p.id) : []),
-    [puzzles],
-  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -49,16 +47,6 @@ export const DragAndDropProvider = ({ children }: DragAndDropProviderProps) => {
       },
     }),
   );
-
-  const imageSrc = useAppSelector(getLevelData)?.imageSrc;
-
-  useEffect(() => {
-    if (imageSrc) {
-      dispatch(fetchImage({ imageSrc }));
-    }
-  }, [dispatch, imageSrc]);
-
-  const imageUrl = useAppSelector((state) => state.gameImage.imageUrl);
 
   return (
     <DndContext
